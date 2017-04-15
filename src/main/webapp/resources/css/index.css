@@ -1,0 +1,30 @@
+.north {
+    overflow: hidden;
+    height: 66px;
+    background: url(../images/top_bg_r.png) #7f99be repeat-x center 50%;
+    line-height: 20px;
+    color: #fff;
+    font-family: Verdana, 微软雅黑, 黑体
+}
+
+.footer {
+    line-height: 32px;
+    text-align: center;
+    font-size: 12px;
+    height: 32px;
+    color: white;
+    padding-top: 6px;
+    background-color: #3158a5;
+}
+
+.noscript {
+    position: absolute;
+    z-index: 100000;
+    height: 2046px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background: white;
+    text-align: center;
+}
+

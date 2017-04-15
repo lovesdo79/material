@@ -1,0 +1,12 @@
+.hidden_y {
+    overflow-y: hidden;
+}
+
+.editcls {
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.rightAlign {
+    text-align: right;
+}
