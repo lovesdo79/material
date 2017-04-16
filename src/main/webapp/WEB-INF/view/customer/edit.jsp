@@ -20,7 +20,32 @@
     <table cellpadding="5" border="0" style="width: auto">
         <tr>
             <td class='rightAlign'>姓名：</td>
-            <td></td>
+            <td><input type="text" name="name" id="name"
+                       class="easyui-textbox" style="width: 200px;"
+                       data-options="required:true,validType:['length[1,100]','verification']"
+                       value="${customer.name}"/><span class="red">*</span></td>
+        </tr>
+        <tr>
+            <td class='rightAlign'>电话：</td>
+            <td><input type="text" name="tel" id="tel"
+                       class="easyui-textbox" style="width: 200px;"
+                       data-options="required:true,validType:['length[1,100]','verification']"
+                       value="${customer.name}"/><span class="red">*</span></td>
+        </tr>
+        <tr>
+            <td class='rightAlign'>地址：</td>
+            <td><input type="text" name="address" id="address"
+                       class="easyui-textbox" style="width: 200px;"
+                       data-options="required:true,validType:['length[1,100]','verification']"
+                       value="${customer.name}"/><span class="red">*</span></td>
+        </tr>
+
+        <tr align="right">
+            <td colspan="6"><a id='btnBack' class="easyui-linkbutton"
+                               data-options="iconCls:'icon-back'" style="margin: 10px;"
+                               onclick="backToPauseList();">返回</a>&nbsp;&nbsp;<a
+                    class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+                    id='btnSumbit' onclick="toSubmit();">提交</a></td>
         </tr>
     </table>
 </form>
