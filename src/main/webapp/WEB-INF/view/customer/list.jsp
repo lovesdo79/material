@@ -10,8 +10,8 @@
 <head>
     <jsp:include page="${root}/WEB-INF/common/header.jsp"></jsp:include>
     <title>客户列表</title>
-    <link type="text/css" rel="stylesheet" href="${root}/resources/css/customer/list.css"/>
-    <script src="${root}/resources/js/customer/list.js" type="text/javascript"></script>
+    <link type="text/css" rel="stylesheet" href="${root}/resources/css/customer.css"/>
+    <script type="text/javascript" src="${root}/resources/js/customer/list.js"></script>
 </head>
 <body class="easyui-layout hidden_y" scroll="no">
 
@@ -19,11 +19,11 @@
     <table id="searchTable">
         <tr>
             <td class="rightAlign"><label style='margin-left: 5px'>姓名：</label></td>
-            <td><input type="text" id="search_name" class="easyui-textbox" style="width: 160px;"/></td>
+            <td><input type="text" id="name" class="easyui-textbox" style="width: 160px;"/></td>
             <td class="rightAlign"><label style='margin-left: 5px'>电话：</label></td>
-            <td><input type="text" id="search_tel" class="easyui-textbox" style="width: 160px;"/></td>
+            <td><input type="text" id="tel" class="easyui-textbox" style="width: 160px;"/></td>
             <td class="rightAlign"><label style='margin-left: 5px'>地址：</label></td>
-            <td><input type="text" id="search_address" class="easyui-textbox" style="width: 160px;"/></td>
+            <td><input type="text" id="address" class="easyui-textbox" style="width: 160px;"/></td>
             <td><a id="btnSelect" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">查找</a></td>
         </tr>
     </table>

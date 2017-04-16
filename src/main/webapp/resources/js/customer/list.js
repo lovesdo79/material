@@ -111,7 +111,7 @@ $(function () {
     });
 
     enterSearch();
-})
+});
 
 /**
  * 回车键搜索
