@@ -40,6 +40,17 @@
                        value="${customer.name}"/><span class="red">*</span></td>
         </tr>
 
+        <tr>
+            <td class='rightAlign'>备注：</td>
+            <td><span class="textbox"
+                      style="width: 525px; height: 100px;"><textarea
+                    class="easyui-validatebox textbox-text" autocomplete="off"
+                    name="remark" id="remark"
+                    data-options="validType:['length[0,200]','verification']"
+                    style="margin-left: 0px; margin-right: 0px; height: 94px; width: 519px;">${pauseProjectModel.reason}</textarea></span>
+            </td>
+        </tr>
+
         <tr align="right">
             <td colspan="6"><a id='btnBack' class="easyui-linkbutton"
                                data-options="iconCls:'icon-back'" style="margin: 10px;"
