@@ -42,12 +42,13 @@
 
         <tr>
             <td class='rightAlign'>备注：</td>
-            <td><span class="textbox"
-                      style="width: 525px; height: 100px;"><textarea
-                    class="easyui-validatebox textbox-text" autocomplete="off"
-                    name="remark" id="remark"
-                    data-options="validType:['length[0,200]','verification']"
-                    style="margin-left: 0px; margin-right: 0px; height: 94px; width: 519px;">${pauseProjectModel.reason}</textarea></span>
+            <td>
+                <span class="textbox" style="width: 525px; height: 100px;">
+                    <textarea class="easyui-validatebox textbox-text" autocomplete="off" name="remark" id="remark"
+                              data-options="validType:['length[0,200]','verification']" style="margin-left: 0px; margin-right: 0px; height: 94px; width: 519px;">
+                        ${customer.remark}
+                    </textarea>
+                </span>
             </td>
         </tr>
 

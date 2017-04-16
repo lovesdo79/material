@@ -179,7 +179,7 @@
             and ADDRESS LIKE '%${address}%'
         </if>
         <if test="tel != null and tel != ''">
-            and TEL LIKE '%${name}%'
+            and TEL LIKE '%${tel}%'
         </if>
         <if test="remark != null and remark != ''">
             and REMARK LIKE '%${remark}%'

@@ -5,11 +5,10 @@ import com.bgfang.material.entity.domain.CustomerDomain;
 import com.bgfang.material.entity.vo.CustomerVo;
 import com.bgfang.material.entity.vo.EasyUI;
 import com.bgfang.material.service.CustomerService;
-import com.bgfang.material.util.Const;
 import com.bgfang.material.util.ResultMap;
+import com.bgfang.material.util.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -36,6 +35,19 @@ public class CustomerController extends BaseController {
         return "customer/list";
     }
 
+    @RequestMapping("show.do")
+    public Object show(@RequestBody String id, HttpServletRequest request) {
+        boolean islook = ServletRequestUtils.getBooleanParameter(request, "islook", false);
+
+        CustomerDomain customerDomain = new CustomerDomain();
+        customerDomain = customerService.selectByPrimaryKey(id);
+
+        request.setAttribute("customer", customerDomain);
+        request.setAttribute("isLook", islook);
+
+        return "customer/edit";
+    }
+
     @RequestMapping("/list.do")
     @ResponseBody
     public Object list(CustomerCondition condition) {
@@ -53,8 +65,7 @@ public class CustomerController extends BaseController {
 
     @RequestMapping(value = {"/save.do"})
     @ResponseBody
-    public Object insertOrUpdate(@RequestBody CustomerDomain customerDomain, HttpServletRequest request) {
-        String name = ServletRequestUtils.getStringParameter(request, "name", "");
+    public Object insertOrUpdate(@RequestBody CustomerDomain customerDomain) {
         ResultMap resultMap = customerService.insertOrUpdate(customerDomain);
         return resultMap;
     }

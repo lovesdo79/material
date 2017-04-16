@@ -18,7 +18,7 @@ import java.util.UUID;
  * Created by bgfang on 2017/4/13.
  */
 @Service
-public class CustomerService {
+public class CustomerService extends BaseService<CustomerDomain,CustomerDomainMapper>{
 
     @Autowired
     private CustomerDomainMapper customerDomainMapper;

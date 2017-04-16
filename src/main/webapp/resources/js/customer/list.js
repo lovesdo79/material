@@ -2,6 +2,15 @@
  * Created by bgfang on 2017/4/14.
  */
 $(function () {
+    loadGrid();
+
+    $("#btnSelect").click(function () {
+        select();
+    });
+    enterSearch();
+});
+
+function loadGrid() {
     $("#gridList").datagrid({
         nowrap: true,
         autoRowHeight: false,
@@ -28,17 +37,6 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 sortable: true,
-                // formatter: function (value, rec) {
-                //     if (rec.id === undefined) {
-                //         return "";
-                //     }
-                //     var btn = "<a class='editcls' onclick=\"look('"
-                //         + rec.id
-                //         + "')\" href=\"javascript:void(0)\">"
-                //         + rec.name + "</a>";
-                //     return btn;
-                //
-                // }
             }, {
                 field: 'address',
                 title: '地址',
@@ -73,13 +71,13 @@ $(function () {
                     if (rec.id === undefined) {
                         return "";
                     }
-                    var btn = "<a class='editcls' onclick='edit('"
+                    var btn = "<a class='editcls' onclick=\"edit('" + rec.id
+                        + "',false)\" href=\"javascript:void(0)\"> 查看</a>"
+                        + "<a class='editcls' onclick=\"edit('"
                         + rec.id
-                        + "',true)' href='javascript:void(0)'>查看</a><a class='editcls' onclick='edit('"
+                        + "',true)\" href='javascript:void(0)'>编辑</a><a class='editcls' onclick=\"del('"
                         + rec.id
-                        + "',false)' href='javascript:void(0)'>编辑</a><a class='editcls' onclick='del('"
-                        + rec.id
-                        + "')' href='javascript:void(0)'>删除</a>";
+                        + "')\" href='javascript:void(0)'>删除</a>";
                     return btn;
 
                 }
@@ -106,12 +104,10 @@ $(function () {
         // },
         // onLoadSuccess: totalFun,
         onLoadError: function (data) {
-            // $.messager.alert("警告", connectionError, "error");
+            $.messager.alert("警告", "网络连接异常", "error");
         }
     });
-
-    enterSearch();
-});
+}
 
 /**
  * 回车键搜索
@@ -146,13 +142,29 @@ function enterSearch() {
         });
 }
 
+function select() {
+    // 校验是否存在不通过的验证
+    var validate = $(".validatebox-invalid");
+    if (validate.length > 0) {
+        return false;
+    }
+
+    var param = $("#gridList").datagrid("options").queryParams;
+    param.name = $("#name").textbox('getValue');
+    param.tel = $("#tel").textbox('getValue');
+    param.address = $("#address").textbox('getValue');
+
+    $("#gridList").datagrid('options').queryParams = param;
+    $("#gridList").datagrid("reload");
+}
+
 
 function add() {
-    openWindow();
+    window.location.href = "./show.do"
 }
 
 function edit(id, isLook) {
-
+    window.location.href = "./show.do?id=" + id + "&islook=" + isLook;
 }
 
 function del(id) {

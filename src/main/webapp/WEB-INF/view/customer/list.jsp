@@ -35,28 +35,5 @@
     <div id="gridList"></div>
 </div>
 
-<!-- 表列编辑弹窗 -->
-<div id="editdlg" class="easyui-dialog" title="编辑" data-options="iconCls:'icon-save',closed:true"
-     style="width: 600px; height: 405px; padding: 10px;">
-    <table>
-        <tr>
-            <td class="rightAlign" style="width: 120px;"><label style='margin-left: 5px;'>姓名：</label></td>
-            <td><input type="text" id="name" class="easyui-textbox" style="width: 160px;"/></td>
-        </tr>
-        <tr>
-            <td class="rightAlign"><label style='margin-left: 5px'>电话：</label></td>
-            <td><input type="text" id="tel" class="easyui-textbox" style="width: 160px;"/></td>
-        </tr>
-        <tr>
-            <td class="rightAlign"><label style='margin-left: 5px'>地址：</label></td>
-            <td><input type="text" id="address" class="easyui-textbox" style="width: 160px;"/></td>
-        </tr>
-        <tr>
-            <td class="rightAlign"><label style='margin-left: 5px'>备注：</label></td>
-            <td><input type="text" id="remark" class="easyui-textbox" style="width: 160px;"/></td>
-        </tr>
-    </table>
-</div>
-
 </body>
 </html>
