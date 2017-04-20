@@ -20,7 +20,7 @@
             <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
             <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
             <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
@@ -34,7 +34,7 @@
         </property>
     </bean>
     <bean id="mappingJacksonHttpMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
     </bean>
 
 

@@ -16,48 +16,57 @@
 <body>
 <form id="customerForm" action="${root}/customer/save.do">
     <input type="hidden" id="id" name="id" value="${customer.id}">
+    <input type="hidden" id="isLook" name="isLook" value="${isLook}">
 
-    <table cellpadding="5" border="0" style="width: auto">
+    <table cellpadding="5" border="0" style="width: auto;margin:0 auto;">
         <tr>
             <td class='rightAlign'>姓名：</td>
-            <td><input type="text" name="name" id="name"
-                       class="easyui-textbox" style="width: 200px;"
+            <td><input type="text" name="name" id="name" class="easyui-textbox" style="width: 200px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
-                       value="${customer.name}"/><span class="red">*</span></td>
+                       value="${customer.name}"/>
+                <span class="red">*</span>
+            </td>
         </tr>
         <tr>
             <td class='rightAlign'>电话：</td>
-            <td><input type="text" name="tel" id="tel"
-                       class="easyui-textbox" style="width: 200px;"
+            <td><input type="text" name="tel" id="tel" class="easyui-textbox" style="width: 200px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
-                       value="${customer.name}"/><span class="red">*</span></td>
+                       value="${customer.tel}"/>
+                <span class="red">*</span>
+            </td>
         </tr>
         <tr>
             <td class='rightAlign'>地址：</td>
-            <td><input type="text" name="address" id="address"
-                       class="easyui-textbox" style="width: 200px;"
+            <td>
+                <input type="text" name="address" id="address" class="easyui-textbox" style="width: 400px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
-                       value="${customer.name}"/><span class="red">*</span></td>
+                       value="${customer.address}"/>
+                <span class="red">*</span>
+            </td>
         </tr>
 
         <tr>
             <td class='rightAlign'>备注：</td>
             <td>
-                <span class="textbox" style="width: 525px; height: 100px;">
-                    <textarea class="easyui-validatebox textbox-text" autocomplete="off" name="remark" id="remark"
-                              data-options="validType:['length[0,200]','verification']" style="margin-left: 0px; margin-right: 0px; height: 94px; width: 519px;">
-                        ${customer.remark}
-                    </textarea>
-                </span>
+                <input type="text" name="remark" id="remark" class="easyui-textbox"
+                       style="width: 400px;height: 80px; overflow: hidden;"
+                       data-options="multiline:true,validType:['length[0,200]','verification']"
+                       value="${customer.remark}"/>
+                <%--<span class="textbox" style="width: 405px; height: 100px;">--%>
+                <%--<textarea class="easyui-validatebox textbox-text" autocomplete="off" name="remark" id="remark"--%>
+                <%--data-options="validType:['length[0,200]','verification']"--%>
+                <%--style="margin-left: 0px; margin-right: 0px; height: 94px; width: 400px;">--%>
+                <%--${customer.remark}--%>
+                <%--</textarea>--%>
+                <%--</span>--%>
             </td>
         </tr>
 
-        <tr align="right">
-            <td colspan="6"><a id='btnBack' class="easyui-linkbutton"
-                               data-options="iconCls:'icon-back'" style="margin: 10px;"
-                               onclick="backToPauseList();">返回</a>&nbsp;&nbsp;<a
-                    class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
-                    id='btnSumbit' onclick="toSubmit();">提交</a></td>
+        <tr align="center">
+            <td colspan="6">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+                   id='btnSumbit' href="javascript:void(0)">提交</a>
+            </td>
         </tr>
     </table>
 </form>

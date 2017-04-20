@@ -67,7 +67,6 @@ function InitLeftMenu() {
     });
 
     $.each(_menus.menus, function (i, n) {
-        debugger;
         var menulist = '';
         menulist += '<ul>';
         $.each(n.menus, function (j, o) {
@@ -77,7 +76,6 @@ function InitLeftMenu() {
                 + '</span></a></div></li> ';
         });
         menulist += '</ul>';
-        debugger;
         $('#wnav').accordion('add', {
             title: n.menuname,
             animate: true,

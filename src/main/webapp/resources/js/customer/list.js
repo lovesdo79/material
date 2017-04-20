@@ -21,7 +21,7 @@ function loadGrid() {
         remoteSort: true,
         rownumbers: true,
         fit: true,
-        fitColumns: true,
+        // fitColumns: true,
         idField: 'id',
         pagination: true,
         pageNumber: 1,
@@ -34,29 +34,35 @@ function loadGrid() {
             {
                 field: 'name',
                 title: '客户姓名',
+                width: 100,
                 halign: 'center',
                 align: 'left',
                 sortable: true,
             }, {
-                field: 'address',
-                title: '地址',
+                field: 'tel',
+                title: '电话',
+                width: 150,
                 halign: 'center',
                 align: 'left',
                 sortable: true
             }, {
-                field: 'tel',
-                title: '电话',
+                field: 'address',
+                title: '地址',
+                width: 200,
                 halign: 'center',
                 align: 'left',
                 sortable: true
             }, {
                 field: 'remark',
                 title: '备注',
+                width: 250,
                 halign: 'center',
+                formatter: formatterTitle,
                 align: 'left'
             }, {
                 field: 'updateTime',
                 title: '更新时间',
+                width: 145,
                 halign: 'center',
                 align: 'center',
                 sortable: true,
@@ -64,6 +70,7 @@ function loadGrid() {
             }, {
                 field: 'opt',
                 title: '操作',
+                width: 115,
                 halign: 'center',
                 align: 'left',
                 sortable: true,
@@ -72,10 +79,11 @@ function loadGrid() {
                         return "";
                     }
                     var btn = "<a class='editcls' onclick=\"edit('" + rec.id
-                        + "',false)\" href=\"javascript:void(0)\"> 查看</a>"
-                        + "<a class='editcls' onclick=\"edit('"
+                        + "',true)\" href=\"javascript:void(0)\"> 查看</a>";
+                    btn += "<a class='editcls' onclick=\"edit('"
                         + rec.id
-                        + "',true)\" href='javascript:void(0)'>编辑</a><a class='editcls' onclick=\"del('"
+                        + "',false)\" href='javascript:void(0)'>编辑</a>";
+                    btn += "<a class='editcls' onclick=\"del('"
                         + rec.id
                         + "')\" href='javascript:void(0)'>删除</a>";
                     return btn;
@@ -160,36 +168,77 @@ function select() {
 
 
 function add() {
-    window.location.href = "./show.do"
+    openWindow('新增', './show.do');
 }
 
 function edit(id, isLook) {
-    window.location.href = "./show.do?id=" + id + "&islook=" + isLook;
+    var url = "./show.do?id=" + id + "&islook=" + isLook;
+    var title = isLook ? "查看" : "编辑";
+
+    openWindow(title, url);
 }
 
 function del(id) {
+    $.messager.confirm("提示", "此操作不可逆转，您确认要删除此客户吗？", function (r) {
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "./del.do?id=" + id,
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                success: function (data) {
+                    var code = data.retCode;
+                    if ("00" === code) {
+                        $.messager.alert("成功", data.rtnMsg, 'info')
+                    } else {
+                        $.messager.alert("错误", data.rtnMsg, 'error')
+                    }
 
+                    loadGrid();
+                }
+            });
+        }
+    });
 }
 
-function openWindow() {
-    var hidden = $("#editdlg").parent().is(":hidden");
+function openWindow(title, url) {
+    var content = '<iframe src="' + url + '" width="100%" height="99%" frameborder="0" scrolling="no"></iframe>';
+    // var hidden = $("#editdlg").parent().is(":hidden");
 
-    if (hidden) {
-        var clientHeight = document.documentElement.clientHeight;
-        var clientWidth = document.documentElement.clientWidth;
-        var divHeight = $("#editdlg").parent().height();
-        var divWidth = $("#editdlg").parent().width();
 
-        var top = (clientHeight - divHeight - 20) * 0.5;
-        var left = (clientWidth - divWidth - 50) * 0.5;
+    var boarddiv = '<div id="msgwindow" title="' + title + '"></div>'//style="overflow:hidden;"可以去掉滚动条
+    $(document.body).append(boarddiv);
+    var win = $('#msgwindow').dialog({
+        content: content,
+        width: "600px",
+        height: "405px",
+        modal: true,
+        title: title,
+        onClose: function () {
+            $(this).dialog('destroy');//后面可以关闭后的事件
+        }
+    });
+    win.dialog('open');
+    /* if (hidden) {
+     var clientHeight = document.documentElement.clientHeight;
+     var clientWidth = document.documentElement.clientWidth;
+     var divHeight = $("#editdlg").parent().height();
+     var divWidth = $("#editdlg").parent().width();
 
-        $('#editdlg').dialog('open').dialog('resize', {
-            top: top,
-            left: left
-        });
-        // initColumnsDiv();
-    } else {
-        $('#editdlg').dialog('close');
-    }
+     var top = (clientHeight - divHeight - 20) * 0.5;
+     var left = (clientWidth - divWidth - 50) * 0.5;
+
+
+     $('#editdlg').dialog({
+
+     });
+     $('#editdlg').dialog('open').dialog('resize', {
+     top: top,
+     left: left
+     });
+     // initColumnsDiv();
+     } else {
+     $('#editdlg').dialog('close');
+     }*/
 }
 

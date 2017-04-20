@@ -10,3 +10,16 @@
 .rightAlign {
     text-align: right;
 }
+
+.leftAlign {
+    text-align: left;
+}
+
+.centerAlign {
+    align: center;
+    text-align: center;
+}
+
+.gainsboroBack{
+    background-color: gainsboro;
+}

@@ -6,9 +6,10 @@ import com.bgfang.material.entity.mapper.CustomerDomainMapper;
 import com.bgfang.material.entity.vo.CustomerVo;
 import com.bgfang.material.util.Const;
 import com.bgfang.material.util.ResultMap;
+import com.bgfang.material.util.StringUtils;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * Created by bgfang on 2017/4/13.
  */
 @Service
-public class CustomerService extends BaseService<CustomerDomain,CustomerDomainMapper>{
+public class CustomerService extends BaseService<CustomerDomain, CustomerDomainMapper> {
 
     @Autowired
     private CustomerDomainMapper customerDomainMapper;
@@ -58,5 +59,50 @@ public class CustomerService extends BaseService<CustomerDomain,CustomerDomainMa
 
     public int getListCount(CustomerCondition condition) {
         return customerDomainMapper.getListCount(condition);
+    }
+
+    public ResultMap delete(String id) {
+        ResultMap resultMap = new ResultMap();
+        if (StringUtils.isEmpty(id)) {
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("请选择需要删除的客户!");
+            return resultMap;
+        }
+
+        int count = this.updateDeleteStatus(id, true);
+
+        if (count <= 0) {
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("您要删除的客户不存在!");
+        }
+        return resultMap;
+    }
+
+    public int updateDeleteStatus(String id, boolean isDelete) {
+        return customerDomainMapper.updateDeleteStatus(id, isDelete);
+    }
+
+    public int insert(CustomerDomain record) {
+        return customerDomainMapper.insert(record);
+    }
+
+    public int insertSelective(CustomerDomain record) {
+        return customerDomainMapper.insertSelective(record);
+    }
+
+    public CustomerDomain selectByPrimaryKey(String id) {
+        return customerDomainMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateByPrimaryKeySelective(CustomerDomain record) {
+        return customerDomainMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public int updateByPrimaryKey(CustomerDomain record) {
+        return customerDomainMapper.updateByPrimaryKey(record);
+    }
+
+    public int deleteByPrimaryKey(String id) {
+        return customerDomainMapper.deleteByPrimaryKey(id);
     }
 }

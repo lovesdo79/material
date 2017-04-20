@@ -34,6 +34,5 @@
 <div region="center" style="padding: 1px; overflow-y: hidden;">
     <div id="gridList"></div>
 </div>
-
 </body>
 </html>

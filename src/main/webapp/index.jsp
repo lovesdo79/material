@@ -19,10 +19,11 @@
 </noscript>
 <div region="north" split="true" border="false"
      class="north">
-		<span style="float: right; padding-right: 20px; padding-top: 15px;"
-              class="head"><span>欢迎&nbsp;&nbsp;admin</span> &nbsp;&nbsp;<span
-                id="bgclock"></span> <a style="float: right;"
-                                        href="${root}/baseController/logout.do" id="loginOut">注销</a> </span>
+		<span style="float: right; padding-right: 20px; padding-top: 15px;" class="head">
+            <span>欢迎&nbsp;&nbsp;admin</span> &nbsp;&nbsp;
+            <span id="bgclock"></span>
+            <a style="float: right;" href="${root}/baseController/logout.do" id="loginOut">注销</a>
+        </span>
     <span style="padding-left: 30px; padding-top: 20px; font-size: 22px; float: left;">运 营 系 统</span>
     <ul id="css3menu"
         style="display: none; padding: 0px; margin: 0px; list-type: none; float: left; margin-left: 40px;">

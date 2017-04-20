@@ -1,10 +1,18 @@
 package com.bgfang.material.service;
 
 import com.bgfang.material.condition.BaseCondition;
+import com.bgfang.material.controller.CustomerController;
 import com.bgfang.material.entity.mapper.BaseMapper;
 import com.bgfang.material.spring.SpringApplicationContextHolder;
+import com.bgfang.material.util.GenericsUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -12,19 +20,67 @@ import java.util.List;
  * Created by bgfang on 2017/4/16.
  */
 public class BaseService<T, M> {
-    protected static final Logger LOGGER = Logger.getLogger(BaseService.class);
+    protected static final Logger logger = Logger.getLogger(BaseService.class);
+    private final Log log = LogFactory.getLog(CustomerController.class);
 
     private BaseMapper<T> baseMapper;
+
     private Class<T> clazz;
 
-    public BaseService() {
-        if (clazz == null) {
-            clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        }
-        if (baseMapper == null) {
-            Object object = SpringApplicationContextHolder.getWebApplicationContext().getBean(clazz);
-            baseMapper = (BaseMapper<T>) object;
-        }
+//    public BaseService() {
+//        if (clazz == null) {
+////            clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+////            clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+//        }
+//        if (baseMapper == null) {
+//            Object object = SpringApplicationContextHolder.getWebApplicationContext().getBean(clazz);
+//            baseMapper = (BaseMapper<T>) object;
+//        }
+//    }
+
+    //    @PostConstruct//在构造方法执行之后执行
+    private void initBaseMapper() throws Exception {
+        //完成以下逻辑，需要对研发本身进行命名与使用规范  
+        //this关键字指对象本身，这里指的是调用此方法的实现类（子类）  
+        logger.info("==========this-->" + this);
+        logger.info("======父类的基本信息-->" + this.getClass().getSuperclass());
+        logger.info("父类和泛型的信息-->" + this.getClass().getGenericSuperclass());
+
+        //得到父类的泛型信息  
+        ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
+        //获取第一个参数的class  
+//      Type typetmp[]=type.getActualTypeArguments();//拿到尖括号里面的泛型，因为不止一个，所以是数组  
+//      for(Type tmp:typetmp){  
+//          logger.info(tmp);  
+//      }  
+        Class clazz = (Class) type.getActualTypeArguments()[0];//得到泛型 com.cris.scm.entity.具体的pojo  
+        logger.info("====第一个参数的class" + clazz);
+
+        //转化为属性名,第一个字母转成小写  
+        //com.cris.scm.entity.Supplier.class->supplier+dao  
+        String localField = clazz.getSimpleName().substring(0, 1).toLowerCase() +
+                clazz.getSimpleName().substring(1) + "dao";//例如 basedao  
+        logger.info("=======localString-->" + localField);
+
+        //getDeclaredField 获得所有属性，包括私有和保护  
+        //通过下面的方法获得到父类的声明属性  
+        Field field = this.getClass().getSuperclass().getDeclaredField(localField);//例如，得到supplierdao属性  
+        logger.info("=====field-->" + field);
+        logger.info("=====field对应的对象-->" + field.get(this));//得到一个代理对象，代理这个SupplierMapper接口  
+        //supplierserviceimpl引用的是一个代理对象？org.apache.ibatis.binding.MapperProxy@367970fa  
+        //得到父类的basedao属性  
+        Field baseField = this.getClass().getSuperclass().getDeclaredField("basedao");
+        logger.info("baseField" + baseField);
+        logger.info("=====baseField对应的对象-->" + baseField.get(this));
+
+        //field.get(this)获取当前this的field字段的  
+        //值。例如：Supplier对象中，baseMapper所指向  
+        //的对象为其子类型SupplierMapper对象，子类型对象  
+        //已被spring实例化于容器中     
+        baseField.set(this, field.get(this));//把basedao的引用，设置到去引用supplierdao指向的堆内存  
+        //后面basedao实际上指向的是SupplierMapper的代理对象在堆内存的实际存在  
+        logger.info("baseField对应的对象-->" + baseField.get(this));
+        //org.apache.ibatis.binding.MapperProxy@367970fa  
     }
 
     public int insert(T record) {

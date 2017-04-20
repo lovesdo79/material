@@ -38,3 +38,22 @@ function formatternumber(val, row) {
     }
     return parseFloat(val).toFixed(2);
 }
+
+/**
+ * 格式化长字段显示
+ *
+ * @param val
+ * @param rec
+ * @returns {String}
+ */
+function formatterTitle(val, rec) {
+    if (rec.id == undefined) {
+        return "";
+    }
+
+    if (typeof (val) == "string") {
+        val = "<span title='" + val + "'>" + val
+            + "</span>";
+    }
+    return val;
+}

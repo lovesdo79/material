@@ -10,7 +10,7 @@ public enum SortName {
     private String name;
     private String value;
 
-    private SortName(String name, String value) {
+    SortName(String name, String value) {
         this.name = name;
         this.value = value;
     }
