@@ -4,6 +4,7 @@ import com.bgfang.material.condition.CustomerCondition;
 import com.bgfang.material.entity.domain.CustomerDomain;
 import com.bgfang.material.entity.mapper.CustomerDomainMapper;
 import com.bgfang.material.entity.vo.CustomerVo;
+import com.bgfang.material.enums.CustomerType;
 import com.bgfang.material.util.Const;
 import com.bgfang.material.util.ResultMap;
 import com.bgfang.material.util.StringUtils;
@@ -33,9 +34,9 @@ public class CustomerService extends BaseService<CustomerDomain, CustomerDomainM
         }
 
         int count = 0;
-        if (null == customerDomain.getId() || "".equalsIgnoreCase(customerDomain.getId())) {
+        if (null == customerDomain.getCustomerId() || "".equalsIgnoreCase(customerDomain.getCustomerId())) {
             String id = UUID.randomUUID().toString();
-            customerDomain.setId(id);
+            customerDomain.setCustomerId(id);
             customerDomain.setCreateTime(new Date());
             customerDomain.setUpdateTime(new Date());
             count = customerDomainMapper.insert(customerDomain);
@@ -54,7 +55,15 @@ public class CustomerService extends BaseService<CustomerDomain, CustomerDomainM
 
     public List<CustomerVo> getListByPager(CustomerCondition condition) {
         List<CustomerVo> customerVos = customerDomainMapper.getListByPager(condition);
+        execute(customerVos);
         return customerVos;
+    }
+
+    private void execute(List<CustomerVo> customerVos) {
+        for (CustomerVo customerVo : customerVos) {
+            String customerType = CustomerType.getValue(customerVo.getType());
+            customerVo.setCustomerType(customerType);
+        }
     }
 
     public int getListCount(CustomerCondition condition) {

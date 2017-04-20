@@ -8,5 +8,21 @@ import com.bgfang.material.entity.domain.CustomerDomain;
 public class CustomerVo extends CustomerDomain {
     private double totalPrice;
 
+    private String customerType;
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
 }
