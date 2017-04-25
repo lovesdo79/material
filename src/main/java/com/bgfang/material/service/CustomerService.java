@@ -8,7 +8,6 @@ import com.bgfang.material.enums.CustomerType;
 import com.bgfang.material.util.Const;
 import com.bgfang.material.util.ResultMap;
 import com.bgfang.material.util.StringUtils;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +54,13 @@ public class CustomerService extends BaseService<CustomerDomain, CustomerDomainM
 
     public List<CustomerVo> getListByPager(CustomerCondition condition) {
         List<CustomerVo> customerVos = customerDomainMapper.getListByPager(condition);
-        execute(customerVos);
+        setDynamicFields(customerVos);
         return customerVos;
     }
 
-    private void execute(List<CustomerVo> customerVos) {
+    private void setDynamicFields(List<CustomerVo> customerVos) {
         for (CustomerVo customerVo : customerVos) {
+            //设置客户类型
             String customerType = CustomerType.getValue(customerVo.getType());
             customerVo.setCustomerType(customerType);
         }

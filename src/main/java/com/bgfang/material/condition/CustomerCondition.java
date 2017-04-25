@@ -13,7 +13,11 @@ public class CustomerCondition extends BaseCondition {
 
     private String remark;
 
-    private String updateTime;
+    private String types;
+
+    private String startTime;
+
+    private String endTime;
 
     public String getName() {
         return name;
@@ -47,11 +51,27 @@ public class CustomerCondition extends BaseCondition {
         this.remark = remark;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public String getTypes() {
+        return types;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public void setTypes(String types) {
+        this.types = types;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

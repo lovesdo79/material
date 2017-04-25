@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.29</version>
         </dependency>
         <!--ehcache缓存-->
         <dependency>

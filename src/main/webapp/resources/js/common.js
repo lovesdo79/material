@@ -47,13 +47,26 @@ function formatternumber(val, row) {
  * @returns {String}
  */
 function formatterTitle(val, rec) {
-    if (rec.id == undefined) {
+    if (rec == undefined) {
         return "";
     }
 
     if (typeof (val) == "string") {
-        val = "<span title='" + val + "'>" + val
+        var title = val;
+        if (val.length > 20) {
+            title = title.substring(0, 18) + "...";
+        }
+        val = "<span title='" + val + "'>" + title
             + "</span>";
     }
     return val;
+}
+
+function registerEnterSearch() {
+    document.onkeydown = function (e) {
+        var e = e || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) {
+            select();
+        }
+    };
 }

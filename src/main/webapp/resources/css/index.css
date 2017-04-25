@@ -28,3 +28,15 @@
     text-align: center;
 }
 
+.easyui-accordion ul{list-style-type:none;margin:0px; padding:10px;}
+.easyui-accordion ul li{/* padding:0px; */}
+.easyui-accordion ul li a{line-height:24px; text-decoration: none; color: black;}
+.easyui-accordion ul li div{margin:2px 0px;padding-left:10px;padding-top:2px;}
+.easyui-accordion ul li div.hover{background:#FFE48D;cursor:pointer;}
+/*.easyui-accordion ul li div.hover{border:1px dashed #99BBE8; background:#FFE48D;cursor:pointer;} */
+.easyui-accordion ul li div.hover a{color:#416AA3;text-decoration:underline;}
+.easyui-accordion ul li div.selected{border:1px dashed #99BBE8; background:#FFE48D;cursor:default;}
+.easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
+
+
+

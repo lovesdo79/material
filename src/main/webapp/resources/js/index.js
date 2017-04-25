@@ -8,25 +8,25 @@ var _menus = {
         "menuname": "琪琪窗帘",
         "menus": [{
             "menuid": "11",
-            "menuname": "窗帘管理",
-            "icon": "icon-users",
-            "url": "#"
+            "menuname": "订单管理",
+            "icon": "icon-trade",
+            "url": "/order/showList"
         }, {
             "menuid": "12",
             "menuname": "客户管理",
-            "icon": "icon-users",
-            "url": "/customer/show_list.do"
+            "icon": "icon-customer",
+            "url": "/customer/showList"
         }, {
             "menuid": "13",
-            "menuname": "角色管理",
-            "icon": "icon-magic",
-            "url": "#"
-        }, {
-            "menuid": "14",
-            "menuname": "权限管理",
-            "icon": "icon-set",
-            "url": "#"
-        }]
+            "menuname": "用户管理",
+            "icon": "icon-users",
+            "url": "/user/showList"
+        }/*, {
+         "menuid": "14",
+         "menuname": "权限管理",
+         "icon": "icon-set",
+         "url": "#"
+         }*/]
     }, {
         "menuid": "2",
         "icon": "icon-sys",
@@ -244,24 +244,18 @@ function clockon() {
     var date = now.getDate();
     var day = now.getDay();
     var hour = now.getHours();
-    var minu = now.getMinutes();
+    var minute = now.getMinutes();
     var sec = now.getSeconds();
     var week;
     month = month + 1;
-    if (month < 10)
-        month = "0" + month;
-    if (date < 10)
-        date = "0" + date;
-    if (hour < 10)
-        hour = "0" + hour;
-    if (minu < 10)
-        minu = "0" + minu;
-    if (sec < 10)
-        sec = "0" + sec;
+    month = month < 10 ? "0" + month : month;
+    date = date < 10 ? "0" + date : date;
+    hour = hour < 10 ? "0" + hour : hour;
+    minute = minute < 10 ? "0" + minute : minute;
+    sec = sec < 10 ? "0" + sec : sec;
     var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
     week = arr_week[day];
-    var time = "";
-    time = year + "年" + month + "月" + date + "日" + " " + hour + ":" + minu
+    var time = year + "年" + month + "月" + date + "日" + " " + hour + ":" + minute
         + ":" + sec + " " + week;
 
     $("#bgclock").html(time);

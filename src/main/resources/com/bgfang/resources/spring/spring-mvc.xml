@@ -23,6 +23,8 @@
             <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    
+    <mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926"/>
 
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
     <!-- 支持JSON数据格式 -->

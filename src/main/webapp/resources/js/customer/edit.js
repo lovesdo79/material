@@ -28,7 +28,7 @@ $(function () {
 function submitForm() {
     $.ajax({
         type: "POST",
-        url: "./save.do",
+        url: "./save",
         data: $("#customerForm").serialize(),
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
@@ -55,6 +55,5 @@ function lookUI(isLook) {
         $('.easyui-datebox').datebox("disable");
 
         $("#btnSumbit").css("display", "none");
-        $('.easyui-textbox').textbox("textbox").addClass("gainsboroBack");
     }
 }

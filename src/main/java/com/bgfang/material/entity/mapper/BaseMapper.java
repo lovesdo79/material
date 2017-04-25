@@ -27,4 +27,6 @@ public interface BaseMapper<T> {
     int deleteByPrimaryKey(String id);
 
     int delete(List<String> ids);
+
+    int virtualDelete(String id);
 }

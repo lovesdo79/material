@@ -14,4 +14,6 @@ public interface CustomerDomainMapper extends BaseMapper<CustomerDomain> {
     int getListCount(CustomerCondition condition);
 
     int updateDeleteStatus(@Param("id") String id, @Param("isDelete") boolean isDelete);
+
+    CustomerDomain getCustomerByOrderId(String orderId);
 }

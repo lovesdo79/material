@@ -1,3 +1,4 @@
+<%@ page import="com.bgfang.material.entity.domain.UserDomain" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -11,6 +12,9 @@
 
 </head>
 <body class="easyui-layout hidden_y" scroll="no">
+<%
+    UserDomain user = (UserDomain) session.getAttribute("user");
+%>
 <noscript>
     <div class="noscript">
         <img src="${root}/resources/navmenu/images/noscript.gif"
@@ -20,9 +24,9 @@
 <div region="north" split="true" border="false"
      class="north">
 		<span style="float: right; padding-right: 20px; padding-top: 15px;" class="head">
-            <span>欢迎&nbsp;&nbsp;admin</span> &nbsp;&nbsp;
-            <span id="bgclock"></span>
-            <a style="float: right;" href="${root}/baseController/logout.do" id="loginOut">注销</a>
+            <span id="bgclock"></span><br/>
+            <span style="position: absolute;right: 55px;">欢迎&nbsp;&nbsp;<%=user.getUserFullName()%></span>
+            <a style="float: right;" href="${root}/logout" id="loginOut">注销</a>
         </span>
     <span style="padding-left: 30px; padding-top: 20px; font-size: 22px; float: left;">运 营 系 统</span>
     <ul id="css3menu"
@@ -33,7 +37,7 @@
 </div>
 <div region="south" split="true" style="height: 45px;">
     <div class="footer">
-        版权所有：<a href="http://www.iflytek.com/" target="_blank"
+        版权所有：<a href="http://www.baidu.com/" target="_blank"
                 style="color: White; font-size: 12px; text-decoration: none">琪琪窗帘布艺</a>&nbsp;&nbsp;Copyright
         &copy; 2017,All rights reserved.
     </div>

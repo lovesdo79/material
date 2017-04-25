@@ -11,10 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,13 +27,13 @@ public class CustomerController extends BaseController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping("/show_list.do")
+    @RequestMapping("/showList")
     public Object view() {
         return "customer/list";
     }
 
-    @RequestMapping("show.do")
-    public Object show(String id, HttpServletRequest request) {
+    @RequestMapping("show/{id}")
+    public Object show(@PathVariable String id, HttpServletRequest request) {
         boolean islook = ServletRequestUtils.getBooleanParameter(request, "islook", false);
 //        boolean id = ServletRequestUtils.getBooleanParameter(request, "id", false);
 
@@ -49,7 +46,7 @@ public class CustomerController extends BaseController {
         return "customer/edit";
     }
 
-    @RequestMapping("/list.do")
+    @RequestMapping("/list")
     @ResponseBody
     public Object list(CustomerCondition condition) {
         filterCondition(condition);
@@ -64,16 +61,16 @@ public class CustomerController extends BaseController {
         return easyUI;
     }
 
-    @RequestMapping(value = {"/save.do"})
+    @RequestMapping(value = {"/save"})
     @ResponseBody
     public Object insertOrUpdate(CustomerDomain customerDomain) {
         ResultMap resultMap = customerService.insertOrUpdate(customerDomain);
         return resultMap;
     }
 
-    @RequestMapping("del.do")
+    @RequestMapping("del/{id}")
     @ResponseBody
-    public Object delete(@RequestParam("id") String id) {
+    public Object delete(@PathVariable String id) {
         ResultMap resultMap = customerService.delete(id);
 
         return resultMap;

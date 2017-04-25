@@ -15,14 +15,14 @@ function loadGrid() {
         nowrap: true,
         autoRowHeight: false,
         striped: true,
-        url: '../customer/list.do',
+        url: '../customer/list',
         sortOrder: 'desc',
         sortName: "updateTime",
         remoteSort: true,
         rownumbers: true,
         fit: true,
         // fitColumns: true,
-        idField: 'id',
+        idField: 'customerId',
         pagination: true,
         pageNumber: 1,
         pageSize: 20,
@@ -42,6 +42,13 @@ function loadGrid() {
                 field: 'tel',
                 title: '电话',
                 width: 150,
+                halign: 'center',
+                align: 'left',
+                sortable: true
+            }, {
+                field: 'customerType',
+                title: '类型',
+                width: 50,
                 halign: 'center',
                 align: 'left',
                 sortable: true
@@ -73,18 +80,17 @@ function loadGrid() {
                 width: 115,
                 halign: 'center',
                 align: 'left',
-                sortable: true,
                 formatter: function (value, rec) {
-                    if (rec.id === undefined) {
+                    if (rec.customerId === undefined) {
                         return "";
                     }
-                    var btn = "<a class='editcls' onclick=\"edit('" + rec.id
+                    var btn = "<a class='editcls' onclick=\"edit('" + rec.customerId
                         + "',true)\" href=\"javascript:void(0)\"> 查看</a>";
                     btn += "<a class='editcls' onclick=\"edit('"
-                        + rec.id
+                        + rec.customerId
                         + "',false)\" href='javascript:void(0)'>编辑</a>";
                     btn += "<a class='editcls' onclick=\"del('"
-                        + rec.id
+                        + rec.customerId
                         + "')\" href='javascript:void(0)'>删除</a>";
                     return btn;
 
@@ -101,8 +107,8 @@ function loadGrid() {
                 left: e.pageX,
                 top: e.pageY
             });
-        },
-        // onBeforeLoad : function(node, param) {
+        }
+        // ,onBeforeLoad : function(node, param) {
         // if (page != 1) {
         // node.page = page;
         // }
@@ -111,9 +117,6 @@ function loadGrid() {
         // }
         // },
         // onLoadSuccess: totalFun,
-        onLoadError: function (data) {
-            $.messager.alert("警告", "网络连接异常", "error");
-        }
     });
 }
 
@@ -121,12 +124,7 @@ function loadGrid() {
  * 回车键搜索
  */
 function enterSearch() {
-    document.onkeydown = function (e) {
-        var e = e || window.event || arguments.callee.caller.arguments[0];
-        if (e && e.keyCode == 13) {
-            select();
-        }
-    };
+    registerEnterSearch();
 
     $("#name").textbox('textbox').bind(
         'keyup',
@@ -168,11 +166,11 @@ function select() {
 
 
 function add() {
-    openWindow('新增', './show.do');
+    openWindow('新增', './show');
 }
 
 function edit(id, isLook) {
-    var url = "./show.do?id=" + id + "&islook=" + isLook;
+    var url = "./show/" + id + "?islook=" + isLook;
     var title = isLook ? "查看" : "编辑";
 
     openWindow(title, url);
@@ -183,11 +181,11 @@ function del(id) {
         if (r) {
             $.ajax({
                 type: "POST",
-                url: "./del.do?id=" + id,
+                url: "./del/" + id,
                 dataType: "json",
                 contentType: "application/x-www-form-urlencoded",
                 success: function (data) {
-                    var code = data.retCode;
+                    var code = data.rtnCode;
                     if ("00" === code) {
                         $.messager.alert("成功", data.rtnMsg, 'info')
                     } else {

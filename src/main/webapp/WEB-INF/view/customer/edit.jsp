@@ -14,8 +14,8 @@
     <script type="text/javascript" src="${root}/resources/js/customer/edit.js"></script>
 </head>
 <body>
-<form id="customerForm" action="${root}/customer/save.do">
-    <input type="hidden" id="id" name="id" value="${customer.id}">
+<form id="customerForm" action="${root}/customer/save">
+    <input type="hidden" id="customerId" name="customerId" value="${customer.customerId}">
     <input type="hidden" id="isLook" name="isLook" value="${isLook}">
 
     <table cellpadding="5" border="0" style="width: auto;margin:0 auto;">
