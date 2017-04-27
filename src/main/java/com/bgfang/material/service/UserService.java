@@ -7,6 +7,7 @@ import com.bgfang.material.util.Const;
 import com.bgfang.material.util.ResultMap;
 import com.bgfang.material.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,32 +23,35 @@ public class UserService {
     @Autowired
     UserDomainMapper userDomainMapper;
 
+    @Value("${material.default.password}")
+    private String defaultPassword;
+
     /**
      * 新增/更新用户信息
      *
      * @param userDomain 用户
      * @return 结果
      */
-    public ResultMap insertOrUpdate(UserDomain userDomain) {
+    public ResultMap insert(UserDomain userDomain) {
         ResultMap resultMap = new ResultMap();
 
-        int count = -1;
-        String id = userDomain.getUserId();
-        if (StringUtils.isEmpty(id)) {
-            id = UUID.randomUUID().toString();
-            userDomain.setUserId(id);
-            userDomain.setCreateTime(new Date());
-
-            count = userDomainMapper.insertSelective(userDomain);
-        } else {
-            userDomain.setUpdateTime(new Date());
-
-            count = userDomainMapper.updateByPrimaryKeySelective(userDomain);
+        //不允许重复用户名
+        UserDomain user = this.selectByUserName(userDomain.getUserName());
+        if (null != user) {
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("用户名已存在！");
+            return  resultMap;
         }
+
+        String id = UUID.randomUUID().toString();
+        userDomain.setUserId(id);
+        userDomain.setCreateTime(new Date());
+
+        int count = userDomainMapper.insertSelective(userDomain);
 
         if (count <= 0) {
             resultMap.setRtnCode(Const.FAIL);
-            resultMap.setRtnMsg("新增/更新用户信息失败！");
+            resultMap.setRtnMsg("新增用户信息失败！");
         }
 
         return resultMap;
@@ -81,12 +85,47 @@ public class UserService {
         return userDomainMapper.selectByUserName(userName);
     }
 
+    public ResultMap resetPassword(String userId) {
+        ResultMap resultMap = new ResultMap();
+
+        UserDomain userDomain = this.selectByPrimaryKey(userId);
+
+        String password = defaultPassword;
+        if (StringUtils.isEmpty(password)) {
+            password = userDomain.getUserName();
+        }
+        userDomain.setPasswd(password);
+
+        int count = this.updateByPrimaryKeySelective(userDomain);
+
+        if (count <= 0) {
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("重置密码失败！");
+        } else {
+            resultMap.setRtnMsg("重置密码成功！");
+        }
+
+        return resultMap;
+    }
+
+    public UserDomain selectByPrimaryKey(String userId) {
+        return userDomainMapper.selectByPrimaryKey(userId);
+    }
+
+    public int updateByPrimaryKeySelective(UserDomain userDomain) {
+        return userDomainMapper.updateByPrimaryKeySelective(userDomain);
+    }
+
     public List<UserDomain> getListByPager(UserCondition condition) {
         List<UserDomain> userDomains = userDomainMapper.getList(condition);
 
         setDynamicFields(userDomains);
 
         return userDomains;
+    }
+
+    public int getListCount(UserCondition condition) {
+        return userDomainMapper.getListCount(condition);
     }
 
     private void setDynamicFields(List<UserDomain> userDomains) {

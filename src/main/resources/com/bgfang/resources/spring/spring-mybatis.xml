@@ -11,7 +11,8 @@
     </context:component-scan>
 
     <!-- 引入属性文件 -->
-    <context:property-placeholder location="classpath:com/bgfang/resources/jdbc.properties"/>
+    <context:property-placeholder order="0" location="classpath:com/bgfang/resources/*.properties"/>
+    <!--<context:property-placeholder order="1" location="classpath:com/bgfang/resources/material.properties"/>-->
 
     <!-- 配置数据源 -->
     <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"

@@ -70,7 +70,7 @@ function InitLeftMenu() {
         var menulist = '';
         menulist += '<ul>';
         $.each(n.menus, function (j, o) {
-            menulist += '<li><div><a ref="' + o.menuid + '" href="#" rel="'
+            menulist += '<li><div><a ref="' + o.menuid + '" href="javascript:void(0)" rel="'
                 + o.url + '" ><span class="icon ' + o.icon
                 + '" >&nbsp;</span><span class="nav">' + o.menuname
                 + '</span></a></div></li> ';

@@ -2,6 +2,7 @@ $(function () {
     loadGrid();
     enterSearch()
 });
+
 function loadGrid() {
     $("#gridList").datagrid({
         nowrap: true,
@@ -166,6 +167,7 @@ function loadGrid() {
         }
     })
 }
+
 function enterSearch() {
     registerEnterSearch();
     $("#name").textbox("textbox").bind("keyup", function (e) {

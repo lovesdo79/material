@@ -164,8 +164,30 @@
     </select>
 
     <update id="virtualDelete" parameterType="java.lang.String">
-        UPDATE "USER"
+        UPDATE USER
         SET IS_DELETE = 1
         WHERE USER_ID = #{userId,jdbcType=VARCHAR}
     </update>
+
+    <sql id="list_search">
+        AND IS_DELETE=0
+        <if test="name != null and name != ''">
+            and (USER_FULL_NAME LIKE '%${name}%' OR USER_NAME LIKE '%${name}%')
+        </if>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap" parameterType="com.bgfang.material.condition.CustomerCondition">
+        <include refid="common.mysql_head"/>
+        SELECT *
+        FROM USER
+        WHERE 1=1
+        <include refid="list_search"/>
+        <include refid="common.mysql_end"/>
+    </select>
+
+    <select id="getListCount" resultType="Integer" parameterType="com.bgfang.material.condition.CustomerCondition">
+        SELECT COUNT(*) FROM USER
+        WHERE 1=1
+        <include refid="list_search"/>
+    </select>
 </mapper>

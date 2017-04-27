@@ -1,6 +1,8 @@
 /**
  * Created by bgfang on 2017/4/14.
  */
+var width = "600px";
+var height = "405px";
 $(function () {
     loadGrid();
 
@@ -166,14 +168,14 @@ function select() {
 
 
 function add() {
-    openWindow('新增', './show');
+    openWindow('新增', './show', width, height);
 }
 
 function edit(id, isLook) {
     var url = "./show/" + id + "?islook=" + isLook;
     var title = isLook ? "查看" : "编辑";
 
-    openWindow(title, url);
+    openWindow(title, url, width, height);
 }
 
 function del(id) {
@@ -197,46 +199,5 @@ function del(id) {
             });
         }
     });
-}
-
-function openWindow(title, url) {
-    var content = '<iframe src="' + url + '" width="100%" height="99%" frameborder="0" scrolling="no"></iframe>';
-    // var hidden = $("#editdlg").parent().is(":hidden");
-
-
-    var boarddiv = '<div id="msgwindow" title="' + title + '"></div>'//style="overflow:hidden;"可以去掉滚动条
-    $(document.body).append(boarddiv);
-    var win = $('#msgwindow').dialog({
-        content: content,
-        width: "600px",
-        height: "405px",
-        modal: true,
-        title: title,
-        onClose: function () {
-            $(this).dialog('destroy');//后面可以关闭后的事件
-        }
-    });
-    win.dialog('open');
-    /* if (hidden) {
-     var clientHeight = document.documentElement.clientHeight;
-     var clientWidth = document.documentElement.clientWidth;
-     var divHeight = $("#editdlg").parent().height();
-     var divWidth = $("#editdlg").parent().width();
-
-     var top = (clientHeight - divHeight - 20) * 0.5;
-     var left = (clientWidth - divWidth - 50) * 0.5;
-
-
-     $('#editdlg').dialog({
-
-     });
-     $('#editdlg').dialog('open').dialog('resize', {
-     top: top,
-     left: left
-     });
-     // initColumnsDiv();
-     } else {
-     $('#editdlg').dialog('close');
-     }*/
 }
 
