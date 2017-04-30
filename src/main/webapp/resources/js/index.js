@@ -58,7 +58,20 @@ $(function () {
     InitLeftMenu();
     tabClose();
     tabCloseEven();
+
+    initMainTab();
 });
+
+function initMainTab() {
+    var tabTitle = '订单管理';
+
+    var url = '/order/showList';
+    var icon = getIcon('1');
+
+    addTab(tabTitle, url, icon);
+    // $('.easyui-accordion li div').removeClass("selected");
+    // $(this).parent().addClass("selected");
+}
 
 // 初始化左侧
 function InitLeftMenu() {
@@ -70,7 +83,11 @@ function InitLeftMenu() {
         var menulist = '';
         menulist += '<ul>';
         $.each(n.menus, function (j, o) {
-            menulist += '<li><div><a ref="' + o.menuid + '" href="javascript:void(0)" rel="'
+            var cls;
+            if (o.menuname == '订单管理') {
+                cls = "class='selected'";
+            }
+            menulist += '<li><div ' + cls + '><a ref="' + o.menuid + '" href="javascript:void(0)" rel="'
                 + o.url + '" ><span class="icon ' + o.icon
                 + '" >&nbsp;</span><span class="nav">' + o.menuname
                 + '</span></a></div></li> ';

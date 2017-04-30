@@ -1,6 +1,11 @@
 $(function () {
     loadGrid();
-    enterSearch()
+
+    $("#btnSelect").click(function () {
+        select();
+    });
+
+    enterSearch();
 });
 
 function loadGrid() {
@@ -69,23 +74,36 @@ function loadGrid() {
             formatter: formatternumber,
             halign: "center",
             align: "right"
+        }, {
+            field: "updateTime",
+            title: "更新时间",
+            width: 150,
+            formatter: formatterdate,
+            halign: "center",
+            align: "center"
+        }, {
+            field: "createTime",
+            title: "创建时间",
+            width: 150,
+            formatter: formatterdate,
+            halign: "center",
+            align: "center"
+        }, {
+            field: "opt",
+            title: "操作",
+            width: 115,
+            halign: "center",
+            align: "left",
+            formatter: function (value, rec) {
+                if (rec.customerId === undefined) {
+                    return ""
+                }
+                var btn = "<a class='editcls' onclick=\"edit('" + rec.orderId + '\',true)" href="javascript:void(0)"> 查看</a>';
+                btn += "<a class='editcls' onclick=\"edit('" + rec.orderId + "',false)\" href='javascript:void(0)'>编辑</a>";
+                btn += "<a class='editcls' onclick=\"del('" + rec.orderId + "')\" href='javascript:void(0)'>删除</a>";
+                return btn
+            }
         }
-            // , {
-            //     field: "opt",
-            //     title: "操作",
-            //     width: 115,
-            //     halign: "center",
-            //     align: "left",
-            //     formatter: function (value, rec) {
-            //         if (rec.customerId === undefined) {
-            //             return ""
-            //         }
-            //         var btn = "<a class='editcls' onclick=\"edit('" + rec.customerId + '\',true)" href="javascript:void(0)"> 查看</a>';
-            //         btn += "<a class='editcls' onclick=\"edit('" + rec.customerId + "',false)\" href='javascript:void(0)'>编辑</a>";
-            //         btn += "<a class='editcls' onclick=\"del('" + rec.customerId + "')\" href='javascript:void(0)'>删除</a>";
-            //         return btn
-            //     }
-            // }
         ]],
         toolbar: "#searchDiv",
         onHeaderContextMenu: function (e, field) {
@@ -180,3 +198,37 @@ function enterSearch() {
         $("#address").textbox("setValue", $(this).val().replace(/\D^./g, ""))
     })
 };
+
+
+function select() {
+    // 校验是否存在不通过的验证
+    var validate = $(".validatebox-invalid");
+    if (validate.length > 0) {
+        return false;
+    }
+
+    var param = $("#gridList").datagrid("options").queryParams;
+    param.name = $("#name").textbox('getValue');
+
+    $("#gridList").datagrid('options').queryParams = param;
+    $("#gridList").datagrid("reload");
+}
+
+function add() {
+    // window.location.href = "./show/null";
+    var url = "./show/null";
+    var windowFeatures = 'width=' + (window.screen.availWidth - 10) + ',height=' + (window.screen.availHeight - 70) + ', top=0' + ', left=0' + ', toolbar=no, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no'
+    window.open(url, '新增', windowFeatures, true);
+}
+
+function edit(id, look) {
+    // window.location.href = "./show/null";
+    var title = "编辑";
+
+    var url = "./show/" + id + "?isLook=" + look;
+    if (look) {
+        title = "查看";
+    }
+    var windowFeatures = 'width=' + (window.screen.availWidth - 10) + ',height=' + (window.screen.availHeight - 70) + ', top=0' + ', left=0' + ', toolbar=no, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no'
+    window.open(url, title, windowFeatures, true);
+}

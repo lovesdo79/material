@@ -20,7 +20,7 @@
 
     <table cellpadding="5" border="0" style="width: auto;margin:0 auto;">
         <tr>
-            <td class='rightAlign'>姓名：</td>
+            <td class='td_left'>姓名：</td>
             <td><input type="text" name="name" id="name" class="easyui-textbox" style="width: 200px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
                        value="${customer.name}"/>
@@ -28,7 +28,7 @@
             </td>
         </tr>
         <tr>
-            <td class='rightAlign'>电话：</td>
+            <td class='td_left'>电话：</td>
             <td><input type="text" name="tel" id="tel" class="easyui-textbox" style="width: 200px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
                        value="${customer.tel}"/>
@@ -36,7 +36,7 @@
             </td>
         </tr>
         <tr>
-            <td class='rightAlign'>地址：</td>
+            <td class='td_left'>地址：</td>
             <td>
                 <input type="text" name="address" id="address" class="easyui-textbox" style="width: 400px;"
                        data-options="required:true,validType:['length[1,100]','verification']"
@@ -46,7 +46,7 @@
         </tr>
 
         <tr>
-            <td class='rightAlign'>备注：</td>
+            <td class='td_left'>备注：</td>
             <td>
                 <input type="text" name="remark" id="remark" class="easyui-textbox"
                        style="width: 400px;height: 80px; overflow: hidden;"

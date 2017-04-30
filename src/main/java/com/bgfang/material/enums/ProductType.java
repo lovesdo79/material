@@ -1,5 +1,10 @@
 package com.bgfang.material.enums;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.EnumSet;
+
 /**
  * Created by bgfang on 2017/4/20.
  */
@@ -24,6 +29,18 @@ public enum ProductType {
             }
         }
         return null;
+    }
+
+    public static JSONArray getAll() {
+        JSONArray array = new JSONArray();
+        for (ProductType c : ProductType.values()) {
+            JSONObject object = new JSONObject();
+            object.put("type", c.getType());
+            object.put("name", c.getName());
+            array.add(object);
+        }
+
+        return array;
     }
 
     public int getType() {

@@ -168,7 +168,7 @@ function select() {
 
 
 function add() {
-    openWindow('新增', './show', width, height);
+    openWindow('新增', './show/null', width, height);
 }
 
 function edit(id, isLook) {

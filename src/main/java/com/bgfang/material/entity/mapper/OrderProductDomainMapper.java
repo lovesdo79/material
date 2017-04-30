@@ -15,4 +15,6 @@ public interface OrderProductDomainMapper extends BaseMapper<OrderProductDomain>
      * @return
      */
     List<OrderProductDomain> selectListByOrderId(String orderId);
+
+    int insertBatch(List<OrderProductDomain> list);
 }

@@ -52,6 +52,10 @@ public class CustomerService extends BaseService<CustomerDomain, CustomerDomainM
     }
 
 
+    public List<CustomerDomain> getAllList() {
+        return customerDomainMapper.getAllList();
+    }
+
     public List<CustomerVo> getListByPager(CustomerCondition condition) {
         List<CustomerVo> customerVos = customerDomainMapper.getListByPager(condition);
         setDynamicFields(customerVos);

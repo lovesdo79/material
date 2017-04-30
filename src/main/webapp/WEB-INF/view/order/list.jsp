@@ -9,7 +9,7 @@
 <html>
 <head>
     <jsp:include page="${root}/WEB-INF/common/header.jsp"></jsp:include>
-    <title>客户列表</title>
+    <title>订单列表</title>
     <link type="text/css" rel="stylesheet" href="${root}/resources/css/order.css"/>
     <script type="text/javascript" src="${root}/resources/js/jquery-easyui-1.4/datagrid-detailview.js"></script>
     <script type="text/javascript" src="${root}/resources/js/order/list.js"></script>

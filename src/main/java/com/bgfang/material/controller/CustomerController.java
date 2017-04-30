@@ -32,7 +32,7 @@ public class CustomerController extends BaseController {
         return "customer/list";
     }
 
-    @RequestMapping("show/{id}")
+    @RequestMapping(value = {"/show", "show/{id}"})
     public Object show(@PathVariable String id, HttpServletRequest request) {
         boolean islook = ServletRequestUtils.getBooleanParameter(request, "islook", false);
 //        boolean id = ServletRequestUtils.getBooleanParameter(request, "id", false);
@@ -63,7 +63,7 @@ public class CustomerController extends BaseController {
 
     @RequestMapping(value = {"/save"})
     @ResponseBody
-    public Object insertOrUpdate(CustomerDomain customerDomain) {
+    public Object save(CustomerDomain customerDomain) {
         ResultMap resultMap = customerService.insertOrUpdate(customerDomain);
         return resultMap;
     }
@@ -74,5 +74,12 @@ public class CustomerController extends BaseController {
         ResultMap resultMap = customerService.delete(id);
 
         return resultMap;
+    }
+
+    @RequestMapping("/listAll")
+    @ResponseBody
+    public Object listAll() {
+        List<CustomerDomain> list = customerService.getAllList();
+        return list;
     }
 }

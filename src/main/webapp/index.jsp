@@ -44,7 +44,7 @@
 </div>
 <div id="mainPanle" region="center" style="background: #eee; width:1280px; overflow-y: hidden">
     <div id="tabs" class="easyui-tabs" fit="true" border="false">
-
+        <%--<iframe id="mainFrame" src="${root}/order/showList" height="100%" width="100%"></iframe>--%>
     </div>
 </div>
 

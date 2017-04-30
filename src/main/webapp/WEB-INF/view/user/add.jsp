@@ -10,7 +10,6 @@
 <head>
     <jsp:include page="${root}/WEB-INF/common/header.jsp"></jsp:include>
     <title>新增用户</title>
-    <link type="text/css" rel="stylesheet" href="${root}/resources/css/customer.css"/>
     <script type="text/javascript" src="${root}/resources/js/user/add.js"></script>
 </head>
 <body>

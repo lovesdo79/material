@@ -12,6 +12,7 @@ import com.bgfang.material.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,21 +33,26 @@ public class OrderService {
 
         int count;
 
+        String id = UUID.randomUUID().toString();
         if (StringUtils.isEmpty(ordersDomain.getOrderId())) {
-            String id = UUID.randomUUID().toString();
             String orderNo = String.valueOf(idWorker.nextId());
             ordersDomain.setOrderId(id);
             ordersDomain.setOrderNo(orderNo);
+            ordersDomain.setCreateTime(new Date());
+            ordersDomain.setUpdateTime(new Date());
 
-            count = ordersDomainMapper.insert(ordersDomain);
+            count = ordersDomainMapper.insertSelective(ordersDomain);
         } else {
 
+            ordersDomain.setUpdateTime(new Date());
             count = ordersDomainMapper.updateByPrimaryKeySelective(ordersDomain);
         }
 
         if (count <= 0) {
             resultMap.setRtnCode(Const.FAIL);
             resultMap.setRtnMsg("");
+        } else {
+            resultMap.setRtnMsg(id);
         }
 
         return resultMap;

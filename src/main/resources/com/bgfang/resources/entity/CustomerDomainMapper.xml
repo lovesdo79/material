@@ -223,6 +223,11 @@
         <include refid="list_search"/>
     </select>
 
+    <select id="getAllList" resultMap="BaseResultMap">
+        SELECT * FROM CUSTOMER
+        ORDER BY NAME
+    </select>
+
     <update id="updateDeleteStatus" parameterType="java.lang.String">
         UPDATE CUSTOMER
         SET IS_DELETE = #{isDelete}
