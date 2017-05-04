@@ -31,12 +31,13 @@ $(function () {
     });
 
 
+    var coustomerType = $("#customerType").val();
     $("#type").combobox({
         valueField: 'type',
         textField: 'name',
         panelHeight: 'auto',
         data: customerTypes
-    }).combobox('setValue', customerId);
+    }).combobox('setValue', coustomerType);
 
     $("#name").textbox("textbox").bind("keyup", function (e) {
         $("#name").textbox("setValue", $(this).val().replace(/\D^./g, ""))
@@ -56,6 +57,7 @@ $(function () {
 
 function loadGrid() {
     $("#gridList").datagrid({
+        url: "../../product/list",
         fit: true,
         columns: [[ //显示的列
             {
@@ -122,7 +124,7 @@ function loadGrid() {
                 align: "right",
                 formatter: formatternumber,
                 editor: {
-                    type: 'textbox',
+                    type: 'numberbox',
                     options: {}
                 }
             }, {
@@ -152,7 +154,7 @@ function loadGrid() {
                 halign: "center",
                 align: "right",
                 editor: {
-                    type: 'textbox',
+                    type: 'numberbox',
                     options: {}
                 }
             }, {

@@ -40,12 +40,20 @@ public class UserService {
         if (null != user) {
             resultMap.setRtnCode(Const.FAIL);
             resultMap.setRtnMsg("用户名已存在！");
-            return  resultMap;
+            return resultMap;
         }
 
         String id = UUID.randomUUID().toString();
         userDomain.setUserId(id);
         userDomain.setCreateTime(new Date());
+        userDomain.setUpdateTime(new Date());
+
+        String password = defaultPassword;
+        if (StringUtils.isEmpty(password)) {
+            password = userDomain.getUserName();
+        }
+        userDomain.setPasswd(password);
+
 
         int count = userDomainMapper.insertSelective(userDomain);
 
@@ -95,6 +103,7 @@ public class UserService {
             password = userDomain.getUserName();
         }
         userDomain.setPasswd(password);
+        userDomain.setUpdateTime(new Date());
 
         int count = this.updateByPrimaryKeySelective(userDomain);
 

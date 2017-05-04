@@ -45,7 +45,9 @@
             </tr>
             <tr>
                 <td class="td_left">客户类型：</td>
-                <td><input type="text" id="type" name="type" class="easyui-combobox info_text"/></td>
+                <td><input type="text" id="type" name="type" class="easyui-combobox info_text"/>
+                    <input type="hidden" id="customerType" name="customerType" value="${customer.type}">
+                </td>
                 <td class="td_left">电话号码：</td>
                 <td><input type="text" id="tel" name="tel" value="${customer.tel}" class="easyui-textbox info_text"/>
                 </td>
