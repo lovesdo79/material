@@ -12,6 +12,8 @@
 <link type="text/css" rel="stylesheet" href="${root}/resources/css/common.css" />
 <script type="text/javascript" src="${root}/resources/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="${root}/resources/js/common.js"></script>
+<link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
 <%@include file="taglib.jsp" %>
 <%@include file="easyUI.jsp" %>
 <%@include file="artDialog.jsp" %>

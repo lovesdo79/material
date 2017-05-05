@@ -28,7 +28,7 @@ $(function () {
 function submitForm() {
     $.ajax({
         type: "POST",
-        url: "./save",
+        url: "../save",
         data: $("#customerForm").serialize(),
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
