@@ -235,7 +235,7 @@
 
     <select id="selectListByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
-        O.*
+        P.*
         FROM PRODUCT P
         LEFT JOIN ORDER_PRODUCT O
         ON P.PRODUCT_ID = O.PRODUCT_ID
