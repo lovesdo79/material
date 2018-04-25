@@ -40,6 +40,8 @@ public class ProductController extends BaseController {
 
         EasyUI<ProductDomain> easyUI = new EasyUI<ProductDomain>();
         List<ProductDomain> productDomains = productService.selectListByOrderId(condition.getOrderId());
+        easyUI.setTotal(productDomains.size());
+        easyUI.setRows(productDomains);
 
         return easyUI;
     }

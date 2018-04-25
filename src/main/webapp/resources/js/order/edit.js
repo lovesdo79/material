@@ -179,6 +179,7 @@ function loadGrid() {
         onClickCell: onClickCell,
         onDblClickRow: onDblClickRow,
         queryParams: {   //在请求数据是发送的额外参数，如果没有则不用写
+            orderId: $("#orderId").val()
         },
         onLoadSuccess: function (data) {
         },
@@ -189,6 +190,7 @@ function loadGrid() {
 
 //可编辑行
 var editIndex = undefined;
+
 function endEditing() {
     if (editIndex == undefined) {
         return true
@@ -202,6 +204,7 @@ function endEditing() {
         return false;
     }
 }
+
 //修改的方式是直接点击单元格，所以table要加上onClickCell属性，然后重写onClickCell方法
 function onClickCell() {
     if ($('#gridList').datagrid('validateRow', editIndex)) {
@@ -221,6 +224,7 @@ function onDblClickRow(index, field) {
         $('#gridList').datagrid('selectRow', editIndex);
     }
 }
+
 // 添加
 function addRemark() {
     if (endEditing()) {
@@ -229,6 +233,7 @@ function addRemark() {
         $('#gridList').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
     }
 }
+
 // 删除
 function removeit() {
     var rows = $('#gridList').datagrid('getSelections');
@@ -247,6 +252,7 @@ function removeit() {
     });
 
 }
+
 // 保存方法（添加修改用了一个方法accept()）
 function save() {
     if (!endEditing()) {
@@ -304,6 +310,7 @@ function save() {
         }
     });
 }
+
 function saveConten() {
     var mbid = $("#mbid").val();
     var content = $("#content").val();

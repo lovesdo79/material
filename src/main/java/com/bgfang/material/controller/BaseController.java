@@ -36,4 +36,12 @@ public class BaseController {
         conditon.setSort(sort);
 
     }
+
+    public boolean checkSafe(String userId, String token) {
+        return false;
+    }
+
+    public String getToken() {
+        return null;
+    }
 }
