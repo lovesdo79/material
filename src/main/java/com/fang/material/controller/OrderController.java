@@ -2,7 +2,6 @@ package com.fang.material.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fang.material.Material;
 import com.fang.material.condition.OrderCondition;
 import com.fang.material.entity.domain.CustomerDomain;
 import com.fang.material.entity.domain.OrderProductDomain;
@@ -16,7 +15,7 @@ import com.fang.material.service.CustomerService;
 import com.fang.material.service.OrderProductService;
 import com.fang.material.service.OrderService;
 import com.fang.material.service.ProductService;
-import com.fang.material.util.Constant;
+import com.fang.material.util.Const;
 import com.fang.material.util.IdWorker;
 import com.fang.material.util.ResultMap;
 import com.fang.material.util.StringUtils;
@@ -172,8 +171,8 @@ public class OrderController extends BaseController {
         result.setTotal(total);
 
 
-        result.setRtnCode(Constant.SUCCESS);
-        result.setRtnMsg(Constant.SUCCESS_MSG);
+        result.setRtnCode(Const.SUCCESS);
+        result.setRtnMsg(Const.SUCCESS_MSG);
 
         log.info("rtnData:" + result);
         return result;

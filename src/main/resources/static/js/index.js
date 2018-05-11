@@ -179,9 +179,17 @@ function getTabConf(id) {
             viewId: "orderListTableView",
             tpl: orderListTpl,
             conf: getOrderConf(),
-            url: "./order/list/wechat"
+            url: "./order/orderList"
         }
     } else if (id === 12) {
+        tab = {
+            id: "customerListTable",
+            viewId: "customerListTableView",
+            tpl: customerListTpl,
+            conf: getCustomCols(),
+            url: "./order/list/wechat"
+        }
+    } else if (id === 13) {
         tab = {
             id: "customerListTable",
             viewId: "customerListTableView",
