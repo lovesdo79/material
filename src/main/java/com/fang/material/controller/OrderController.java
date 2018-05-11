@@ -2,21 +2,26 @@ package com.fang.material.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fang.material.Material;
 import com.fang.material.condition.OrderCondition;
 import com.fang.material.entity.domain.CustomerDomain;
 import com.fang.material.entity.domain.OrderProductDomain;
 import com.fang.material.entity.domain.OrdersDomain;
 import com.fang.material.entity.domain.ProductDomain;
 import com.fang.material.entity.vo.EasyUI;
+import com.fang.material.entity.vo.ListResult;
 import com.fang.material.entity.vo.OrderVo;
 import com.fang.material.entity.vo.ProductVo;
 import com.fang.material.service.CustomerService;
 import com.fang.material.service.OrderProductService;
 import com.fang.material.service.OrderService;
 import com.fang.material.service.ProductService;
+import com.fang.material.util.Constant;
 import com.fang.material.util.IdWorker;
 import com.fang.material.util.ResultMap;
 import com.fang.material.util.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -35,6 +40,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/order")
 public class OrderController extends BaseController {
+    private static final Log log = LogFactory.getLog(OrderController.class);
 
     @Autowired
     private OrderService orderService;
@@ -152,18 +158,24 @@ public class OrderController extends BaseController {
     }
 
 
-    @RequestMapping("/list/wechat")
+    @RequestMapping("/orderList")
     @ResponseBody
     public Object listWechat(OrderCondition condition) {
-        Object result = this.list(condition);
+        log.info("request param:" + JSONObject.toJSONString(condition));
 
-        String token = condition.getToken();
+        ListResult<OrderVo> result = new ListResult<OrderVo>();
+        filterCondition(condition);
 
-        JSONObject data = getResultData(token);
-        data.putAll(JSONObject.parseObject(JSONObject.toJSONString(result)));
+        List<OrderVo> orderVos = orderService.getListByPager(condition);
+        int total = orderService.getListCount(condition);
+        result.setRows(orderVos);
+        result.setTotal(total);
 
-        ResultMap resultMap = new ResultMap(data);
 
-        return resultMap;
+        result.setRtnCode(Constant.SUCCESS);
+        result.setRtnMsg(Constant.SUCCESS_MSG);
+
+        log.info("rtnData:" + result);
+        return result;
     }
 }

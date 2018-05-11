@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by fang on 2017/4/15.
  */
 @Controller
-@RequestMapping("/base")
+//@RequestMapping("/base")
 public class BaseController {
 
     private final Log log = LogFactory.getLog(BaseController.class);
@@ -38,6 +38,11 @@ public class BaseController {
         }
 
         return null;
+    }
+
+    @RequestMapping("index")
+    public String index(){
+        return "index";
     }
 
     public void filterCondition(BaseCondition conditon) {

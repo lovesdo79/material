@@ -48,7 +48,10 @@ public class BaseCondition {
         if (0 == this.getPage()) {
             return 0;
         }
-        int start = this.getPageSize() * (this.getPage() - 1) - 1;
+        int startSize = this.getPageSize() * (this.getPage() - 1) ;
+        if (startSize == -1) {
+            startSize = 0;
+        }
         return startSize;
     }
 
@@ -57,7 +60,7 @@ public class BaseCondition {
     }
 
     public int getPageSize() {
-        return rows;
+        return pageSize;
     }
 
     public void setPageSize(int pageSize) {

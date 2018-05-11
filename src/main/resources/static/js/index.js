@@ -1,282 +1,198 @@
-/**
- * Created by bgfang on 2017/4/14.
- */
-var _menus = {
-    "menus": [{
-        "menuid": "1",
-        "icon": "icon-sys",
-        "menuname": "琪琪窗帘",
-        "menus": [{
-            "menuid": "11",
-            "menuname": "订单管理",
-            "icon": "icon-trade",
-            "url": "/order/showList"
-        }, {
-            "menuid": "12",
-            "menuname": "客户管理",
-            "icon": "icon-customer",
-            "url": "/customer/showList"
-        }, {
-            "menuid": "13",
-            "menuname": "用户管理",
-            "icon": "icon-users",
-            "url": "/user/showList"
-        }/*, {
-         "menuid": "14",
-         "menuname": "权限管理",
-         "icon": "icon-set",
-         "url": "#"
-         }*/]
-    }, {
-        "menuid": "2",
-        "icon": "icon-sys",
-        "menuname": "物料管理",
-        "menus": [{
-            "menuid": "21",
-            "menuname": "供货商管理",
-            "icon": "icon-nav",
-            "url": "demo.html"
-        }, {
-            "menuid": "22",
-            "menuname": "布料管理",
-            "icon": "icon-nav",
-            "url": "demo.html"
-        }, {
-            "menuid": "23",
-            "menuname": "配件管理",
-            "icon": "icon-nav",
-            "url": "demo.html"
-        }]
-    }]
+var $, table, element, layer, laytpl;
+var navList = [{
+    id: 11,
+    name: "订单管理"
+}, {
+    id: 12,
+    name: "客户管理"
+}, {
+    id: 13,
+    name: "用户管理"
+}, {
+    id: 21,
+    name: "供货商管理"
+}, {
+    id: 22,
+    name: "布料管理"
+}, {
+    id: 23,
+    name: "配件管理"
+}];
+var token = {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ7XCJ1c2VySWRcIjpcIjFcIixcInVzZXJOYW1lXCI6XCJiZ2ZhbmdcIixcInVzZXJGdWxsTmFtZVwiOlwi5pa556eJ57qyXCIsXCJwYXNzd2RcIjpcIjEyMzQ1NlwiLFwiaXNEZWxldGVcIjpmYWxzZSxcImNyZWF0ZVRpbWVcIjpudWxsLFwidXBkYXRlVGltZVwiOjE0OTM5OTg5NDQwMDB9IiwiZXhwIjoxNTI1OTIyMDczfQ.IBi_4cTHUm8gOT_E9YRo7ZIPLjip2jwL8XRCRy5MRlI"
 };
+layui.config({
+    base: '/js/layui/lay.modules/'
+}).use(['element', 'form', 'table', 'laytpl'], function () {
+    $ = layui.jquery;
+    element = layui.element;
+    table = layui.table;
+    layer = layui.layer;
+    laytpl = layui.laytpl;
+
+    $('.site-nav-active').on('click', function () {
+        var othis = $(this), id = othis.data('id');
+        // active[type] ? active[type].call(this, othis) : '';
 
 
-$(function () {
-    clockon();
+        var li = $("li[lay-id=" + id + "]").length;
+        // console.log(li);
+        console.log();
+        if (active['tabExist'].call(this, id)) {
+            //tab已经存在直接切换tab
+            active['tabChange'].call(this, id);
+        } else {
+            //创建tab
+            var data = {};
+            navList.forEach(function (value) {
+                if (value.id === id) {
+                    data = value;
+                }
+            });
+            active['tabAdd'].call(this, data);
+            active['tabChange'].call(this, id);
+        }
+    });
 
+    element.on('tab(main-container)', function (elem) {
+        var id = $(this).attr('lay-id');
+        location.hash = 'tabId=' + id;
 
-    InitLeftMenu();
-    tabClose();
-    tabCloseEven();
+        $("dd").removeClass("layui-this");
+        var li = $("a[data-id=" + id + "]");
+        li.parent().addClass("layui-this");
+    });
 
-    initMainTab();
+    $("#orderSearch").on('click', function () {
+        layer.msg("查询");
+    });
+
+    loadList(11);
 });
 
-function initMainTab() {
-    var tabTitle = '订单管理';
 
-    var url = '/order/showList';
-    var icon = getIcon('1');
-
-    addTab(tabTitle, url, icon);
-    // $('.easyui-accordion li div').removeClass("selected");
-    // $(this).parent().addClass("selected");
-}
-
-// 初始化左侧
-function InitLeftMenu() {
-    $("#wnav").accordion({
-        animate: true
-    });
-
-    $.each(_menus.menus, function (i, n) {
-        var menulist = '';
-        menulist += '<ul>';
-        $.each(n.menus, function (j, o) {
-            var cls;
-            if (o.menuname == '订单管理') {
-                cls = "class='selected'";
-            }
-            menulist += '<li><div ' + cls + '><a ref="' + o.menuid + '" href="javascript:void(0)" rel="'
-                + o.url + '" ><span class="icon ' + o.icon
-                + '" >&nbsp;</span><span class="nav">' + o.menuname
-                + '</span></a></div></li> ';
+//触发事件
+var active = {
+    tabAdd: function (data) {
+        // console.log(data);
+        //新增一个Tab项
+        var content = createTabContent(data.id);
+        element.tabAdd('main-container', {
+            title: data.name,
+            content: content,
+            id: data.id
         });
-        menulist += '</ul>';
-        $('#wnav').accordion('add', {
-            title: n.menuname,
-            animate: true,
-            content: menulist,
-            iconCls: 'icon ' + n.icon
-        });
-
-    });
-
-    $('.easyui-accordion li a').click(function () {
-        var tabTitle = $(this).children('.nav').text();
-
-        var url = $(this).attr("rel");
-        var menuid = $(this).attr("ref");
-        var icon = getIcon(menuid);
-
-        addTab(tabTitle, url, icon);
-        $('.easyui-accordion li div').removeClass("selected");
-        $(this).parent().addClass("selected");
-    }).hover(function () {
-        $(this).parent().addClass("hover");
-    }, function () {
-        $(this).parent().removeClass("hover");
-    });
-
-    // 选中第一个
-    var panels = $('#wnav').accordion('panels');
-    var t = panels[0].panel('options').title;
-    $('#wnav').accordion('select', t);
-}
-// 获取左侧导航的图标
-function getIcon(menuid) {
-    var icon = 'icon ';
-    $.each(_menus.menus, function (i, n) {
-        $.each(n.menus, function (j, o) {
-            if (o.menuid == menuid) {
-                icon += o.icon;
-            }
-        });
-    });
-
-    return icon;
-}
-
-function addTab(subtitle, url, icon) {
-    if (!$('#tabs').tabs('exists', subtitle)) {
-        $('#tabs').tabs('add', {
-            title: subtitle,
-            content: createFrame(url),
-            closable: true,
-            icon: icon
-        });
-    } else {
-        $('#tabs').tabs('select', subtitle);
-        $('#mm-tabupdate').click();
+        loadList(data.id);
+    },
+    tabChange: function (id) {
+        //切换到指定Tab项
+        element.tabChange('main-container', id); //切换到：用户管理
+    },
+    tabExist: function (id) {
+        return element.tabExist('main-container', id);
     }
-    tabClose();
+};
+
+function createTabContent(id) {
+    var tabConf = getTabConf(id);
+
+    return "<div id='" + tabConf.viewId + "'></div>";
 }
 
-function createFrame(url) {
-    var s = '<iframe scrolling="auto" frameborder="0"  src="' + url
-        + '" style="width:100%;height:100%;"></iframe>';
-    return s;
-}
+function loadList(id) {
+    var tabConf = getTabConf(id);
+    var tabId = tabConf.id;
 
-function tabClose() {
-    /* 双击关闭TAB选项卡 */
-    $(".tabs-inner").dblclick(function () {
-        var subtitle = $(this).children(".tabs-closable").text();
-        $('#tabs').tabs('close', subtitle);
+    var view = document.getElementById(tabConf.viewId);
+    var tpl = tabConf.tpl.innerHTML;
+    console.log(tpl);
+    laytpl(tpl).render({}, function (html) {
+        view.innerHTML = html;
     });
-    /* 为选项卡绑定右键 */
-    $(".tabs-inner").bind('contextmenu', function (e) {
-        $('#mm').menu('show', {
-            left: e.pageX,
-            top: e.pageY
-        });
-
-        var subtitle = $(this).children(".tabs-closable").text();
-
-        $('#mm').data("currtab", subtitle);
-        $('#tabs').tabs('select', subtitle);
-        return false;
-    });
-}
-// 绑定右键菜单事件
-function tabCloseEven() {
-    // 刷新
-    $('#mm-tabupdate').click(function () {
-        var currTab = $('#tabs').tabs('getSelected');
-        var url = $(currTab.panel('options').content).attr('src');
-        $('#tabs').tabs('update', {
-            tab: currTab,
-            options: {
-                content: createFrame(url)
-            }
-        });
-    });
-    // 关闭当前;
-    $('#mm-tabclose').click(function () {
-        var currtab_title = $('#mm').data("currtab");
-        $('#tabs').tabs('close', currtab_title);
-    });
-    // 全部关闭
-    $('#mm-tabcloseall').click(function () {
-        $('.tabs-inner span').each(function (i, n) {
-            var t = $(n).text();
-            $('#tabs').tabs('close', t);
-        });
-    });
-    // 关闭除当前之外的TAB
-    $('#mm-tabcloseother').click(function () {
-        $('#mm-tabcloseright').click();
-        $('#mm-tabcloseleft').click();
-    });
-    // 关闭当前右侧的TAB
-    $('#mm-tabcloseright').click(function () {
-        var nextall = $('.tabs-selected').nextAll();
-        if (nextall.length == 0) {
-            msgShow('系统提示', '后边没有啦~~', 'error');
-
-            return false;
+    var sortObj = tabConf.conf.sortObj;
+    var whereObj = {
+        token: token.token,
+        sort: sortObj.field,
+        order: sortObj.type
+    };
+    var tableIns = table.render({
+            elem: "#" + tabId,
+            method: "POST",
+            url: tabConf.url,
+            height: "full-235",
+            where: whereObj,
+            request: {pageName: "page", limitName: "pageSize"},
+            response: {
+                statusName: 'rtnCode',
+                statusCode: "000",
+                countName: 'total',
+                dataName: 'rows'
+            },
+            initSort: sortObj,
+            cols: tabConf.conf.cols,
+            text: {none: "暂无数据"},
+            limit: 5,
+            limits: [5, 10, 20],
+            page: true
         }
-        nextall.each(function (i, n) {
-            var t = $('a:eq(0) span', $(n)).text();
-            $('#tabs').tabs('close', t);
+    );
+    table.on('sort(' + tabId + ')', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        console.log(obj.field); //当前排序的字段名
+        console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+        console.log(this); //当前排序的 th 对象
+        sortObj = obj;
+        whereObj = {
+            token: token.token,
+            sort: sortObj.field,
+            order: sortObj.type
+        };
+        //尽管我们的 table 自带排序功能，但并没有请求服务端。
+        //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+        tableIns.reload({
+            initSort: obj,//记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+            where: whereObj
         });
-        return false;
     });
-    // 关闭当前左侧的TAB
-    $('#mm-tabcloseleft').click(function () {
-        var prevall = $('.tabs-selected').prevAll();
-        if (prevall.length == 0) {
-            alert('到头了，前边没有啦~~');
-            return false;
+}
+
+function formatterdate(val) {
+    if (val != null) {
+        var date = new Date(val);
+        var years = date.getFullYear();
+        var months = date.getMonth() + 1;
+        var dates = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        return years + '-' + (months < 10 ? ('0' + months) : months) + '-' + (dates < 10 ? ('0' + dates) : dates)
+            + " " + (hours < 10 ? ('0' + hours) : hours) + ":" + (minutes < 10 ? ('0' + minutes) : minutes)
+            + ":" + (seconds < 10 ? ('0' + seconds) : seconds);
+    }
+}
+
+function getTabConf(id) {
+    var tab = {};
+
+    if (id === 11) {
+        tab = {
+            id: "orderListTable",
+            viewId: "orderListTableView",
+            tpl: orderListTpl,
+            conf: getOrderConf(),
+            url: "./order/list/wechat"
         }
-        prevall.each(function (i, n) {
-            var t = $('a:eq(0) span', $(n)).text();
-            $('#tabs').tabs('close', t);
-        });
-        return false;
-    });
+    } else if (id === 12) {
+        tab = {
+            id: "customerListTable",
+            viewId: "customerListTableView",
+            tpl: customerListTpl,
+            conf: getCustomCols(),
+            url: "./order/list/wechat"
+        }
+    }
 
-    // 退出
-    $("#mm-exit").click(function () {
-        $('#mm').menu('hide');
-    });
-}
-
-// 弹出信息窗口 title:标题 msgString:提示信息 msgType:信息类型 [error,info,question,warning]
-function msgShow(title, msgString, msgType) {
-    $.messager.alert(title, msgString, msgType);
-}
-
-function getUrlByTile(title) {
-
+    return tab;
 }
 
 
-// 本地时钟
-function clockon() {
-    var now = new Date();
-    var year = now.getFullYear();
-    // getFullYear getYear
-    var month = now.getMonth();
-    var date = now.getDate();
-    var day = now.getDay();
-    var hour = now.getHours();
-    var minute = now.getMinutes();
-    var sec = now.getSeconds();
-    var week;
-    month = month + 1;
-    month = month < 10 ? "0" + month : month;
-    date = date < 10 ? "0" + date : date;
-    hour = hour < 10 ? "0" + hour : hour;
-    minute = minute < 10 ? "0" + minute : minute;
-    sec = sec < 10 ? "0" + sec : sec;
-    var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
-    week = arr_week[day];
-    var time = year + "年" + month + "月" + date + "日" + " " + hour + ":" + minute
-        + ":" + sec + " " + week;
-
-    $("#bgclock").html(time);
-
-    setTimeout("clockon()", 200);
-}
 

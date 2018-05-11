@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class InterceptorConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,6 +27,8 @@ public class InterceptorConfiguration extends WebMvcConfigurerAdapter {
         exludePathPatrerns.add("/**.html");
         exludePathPatrerns.add("/static/**");
         exludePathPatrerns.add("/error");
+        exludePathPatrerns.add("/index");
+        exludePathPatrerns.add("/templates/**");
         login.excludePathPatterns(exludePathPatrerns);
         login.addPathPatterns("/**");
 
