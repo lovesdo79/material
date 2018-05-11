@@ -29,7 +29,7 @@ public class LoginFilter implements Filter {
 
         HttpSession session = request.getSession();
         UserDomain userDomain = (UserDomain) session.getAttribute("user");
-        if (url.contains("/resources/") || url.endsWith("logout") || url.endsWith("login.jsp") || url.endsWith("login") || null != userDomain) {
+        if (url.contains("/resources/") || url.endsWith("logout") || url.endsWith("login.jsp") || url.endsWith("login") || url.endsWith("wechat") || url.endsWith("getToken") || null != userDomain) {
             filterChain.doFilter(request, response);
         } else {
             PrintWriter printWriter = response.getWriter();

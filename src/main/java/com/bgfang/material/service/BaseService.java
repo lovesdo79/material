@@ -1,17 +1,9 @@
 package com.bgfang.material.service;
 
 import com.bgfang.material.condition.BaseCondition;
-import com.bgfang.material.controller.CustomerController;
 import com.bgfang.material.entity.mapper.BaseMapper;
-import com.bgfang.material.spring.SpringApplicationContextHolder;
-import com.bgfang.material.util.GenericsUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -21,7 +13,6 @@ import java.util.List;
  */
 public class BaseService<T, M> {
     protected static final Logger logger = Logger.getLogger(BaseService.class);
-    private final Log log = LogFactory.getLog(CustomerController.class);
 
     private BaseMapper<T> baseMapper;
 

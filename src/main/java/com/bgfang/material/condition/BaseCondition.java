@@ -5,6 +5,8 @@ package com.bgfang.material.condition;
  */
 public class BaseCondition {
 
+    private String token;
+
     /**
      * 当前页数
      */
@@ -76,5 +78,13 @@ public class BaseCondition {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

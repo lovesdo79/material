@@ -6,8 +6,9 @@ import com.bgfang.material.entity.domain.CustomerDomain;
 import com.bgfang.material.entity.domain.OrderProductDomain;
 import com.bgfang.material.entity.domain.OrdersDomain;
 import com.bgfang.material.entity.domain.ProductDomain;
-import com.bgfang.material.entity.mapper.OrdersDomainMapper;
-import com.bgfang.material.entity.vo.*;
+import com.bgfang.material.entity.vo.EasyUI;
+import com.bgfang.material.entity.vo.OrderVo;
+import com.bgfang.material.entity.vo.ProductVo;
 import com.bgfang.material.service.CustomerService;
 import com.bgfang.material.service.OrderProductService;
 import com.bgfang.material.service.OrderService;
@@ -18,8 +19,9 @@ import com.bgfang.material.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.WebUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -118,7 +120,9 @@ public class OrderController extends BaseController {
 
         List<OrderProductDomain> orderProductDomains = new ArrayList<OrderProductDomain>();
         for (ProductVo productVo : productVos) {
-            productVo.setProductId(UUID.randomUUID().toString());
+            if (StringUtils.isEmpty(productVo.getProductId())) {
+                productVo.setProductId(UUID.randomUUID().toString());
+            }
             productVo.setIsDelete(false);
 
             OrderProductDomain orderProductDomain = new OrderProductDomain();

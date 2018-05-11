@@ -12,5 +12,7 @@ public class Const {
     public static final String SUCCESS_MSG = "SUCCESS!";
     public static final String FAIL = "99";
 
+    public static final String TOKEN = "token";
+
 
 }
