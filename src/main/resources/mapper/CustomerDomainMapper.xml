@@ -225,10 +225,10 @@
 
     <select id="getAllList" resultMap="BaseResultMap">
         SELECT * FROM CUSTOMER
-        ORDER BY NAME
+        ORDER BY UPDATE_TIME desc
     </select>
 
-    <update id="updateDeleteStatus" parameterType="java.lang.String">
+    <update id="updateDeleteStatus">
         UPDATE CUSTOMER
         SET IS_DELETE = #{isDelete}
         where CUSTOMER_ID = #{id}

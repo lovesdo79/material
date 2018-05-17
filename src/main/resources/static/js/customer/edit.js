@@ -1,59 +1,69 @@
-/**
- * Created by bgfang on 2017/4/16.
- */
-var isLook = false;
-$(function () {
+var $, form;
+layui.config({
+    base: '/js/layui/lay.modules/'
+}).use(['table', 'form'], function () {
+    $ = layui.jquery;
+    form = layui.form;
 
-    isLook = $("#isLook").val() == "true" ? true : false;
 
+    var islook = $('#islook').val().toLowerCase() === "true";
+    var fastadd = $('#fastadd').val().toLowerCase() === "true";
 
-    lookUI(isLook);
+    lookView(islook);
 
-    $("#btnSumbit").click(function () {
-        // $.messager.confirm('确认', '确认提交', function (r) {
-        //     if (r) {
-        $("#customerForm").form('enableValidation');
-
-        if ($("#customerForm").form('validate')) {
-            submitForm();
-        }
-        //     }
-        // });
+    $("#editBtn").click(function () {
+        lookView(false);
     });
 
+    form.on('submit(save)', function (data) {
+        var index = parent.layer.getFrameIndex(window.name);
+        $.ajax({//异步请求返回给后台
+            url: '/customer/save',
+            type: 'POST',
+            data: data.field,
+            dataType: 'json',
+            success: function (data) {
+                //这里获取到数据执行显示
+                if (data.rtnCode === "00") {
+                    lookView(true);
+                    if (fastadd) {
+                        parent.initNameSelect();
+                        parent.layer.close(index);
+                    } else {
+                        layer.confirm("客户信息保存成功,是否回到列表", function () {
+                            parent.reloadList();
+                            parent.layer.close(index);
+                        });
+                    }
+                } else {
+                    layer.alert(data.rtnMsg);
+                }
+            }
+        });
+        return false;
+    });
 
-    $("#customerForm").form('disableValidation');
 });
 
-function submitForm() {
-    $.ajax({
-        type: "POST",
-        url: "../save",
-        data: $("#customerForm").serialize(),
-        contentType: "application/x-www-form-urlencoded",
-        success: function (data) {
-            var code = data.rtnCode;
 
-            if ("00" === code) {
-                self.close();
-                // window.opener.$("#gridList").datagrid('reload');
-                parent.$("#gridList").datagrid("reload");
-                parent.$("#msgwindow").window("close");
-            } else {
-                $.messager.alert("错误", data.rtnMsg, "error");
-            }
-
-        }
-    });
-}
-
-function lookUI(isLook) {
-    if (isLook) {
-        $("#yxsuccessForm input").attr("disabled", true);
-        $('.easyui-textbox').textbox("disable");
-        $('.easyui-combobox').combobox("disable");
-        $('.easyui-datebox').datebox("disable");
-
-        $("#btnSumbit").css("display", "none");
+function lookView(islook) {
+    if (islook) {
+        $('.layui-input').attr("disabled", "disabled");
+        $('.layui-input').addClass("disable-input");
+        $('.layui-textarea').attr("disabled", "disabled");
+        $('.layui-textarea').addClass("disable-input");
+        $('#submitBtn').attr("disabled", "disabled");
+        $('#submitBtn').addClass("display layui-btn-disabled");
+        $('#editBtn').removeAttr('disabled');
+        $('#editBtn').removeClass("layui-btn-disabled");
+    } else {
+        $('.layui-input').removeAttr("disabled");
+        $('.layui-input').removeClass("disable-input");
+        $('.layui-textarea').removeAttr("disabled");
+        $('.layui-textarea').removeClass("disable-input");
+        $('#submitBtn').removeAttr('disabled');
+        $('#submitBtn').removeClass("display layui-btn-disabled");
+        $('#editBtn').attr('disabled', 'disabled');
+        $('#editBtn').addClass("layui-btn-disabled");
     }
 }

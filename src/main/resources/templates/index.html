@@ -103,20 +103,15 @@
     <div class="layui-body site-demo" id="main-container">
         <div class="layui-tab layui-tab-card" lay-filter="main-container" lay-allowclose="true">
             <ul class="layui-tab-title">
-                <li class="layui-this" lay-id="11">订单管理</li>
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    <div id="orderListTableView">
 
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="layui-footer footer footer-demo layui-bg-blue" id="main-footer">
+    <div class="layui-footer footer footer-demo" id="main-footer">
         <div class="layui-main">
-            <p>版权所有:琪琪窗帘布艺 Copyright&copy; 2018 ,All rights reserved.</p>
+            <p style="color: #0A0E11">版权所有:琪琪窗帘布艺 Copyright&copy; 2018 ,All rights reserved.</p>
         </div>
     </div>
 </div>
@@ -126,14 +121,12 @@
 <script src="../js/index.js"></script>
 <script src='../js/listConf.js'></script>
 
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+<script type="text/html" id="userBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">重置密码</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-
-<script id="orderListTpl" type="text/html">
-    <div id="orderSearchDiv" style="">
+<script id="userListTpl" type="text/html">
+    <div id="userSearchDiv" style="">
         <!--<div class="layui-form-item">-->
         <div class="layui-inline">
             <label class="layui-form-label search-label">姓名</label>
@@ -141,52 +134,9 @@
                 <input type="text" name="name" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label search-label">商品</label>
-            <div class="layui-input-inline">
-                <input type="text" name="product" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label search-label">地址</label>
-            <div class="layui-input-inline">
-                <input type="text" name="address" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <button id="orderSearch" class="layui-btn layui-btn-primary layui-btn-radius"
-                data-type="reload">查询
-        </button>
         <!--</div>-->
     </div>
-    <table id="orderListTable" lay-filter="orderListTable"></table>
-</script>
-<script id="customerListTpl" type="text/html">
-    <div id="customerSearchDiv" style="">
-        <!--<div class="layui-form-item">-->
-        <div class="layui-inline">
-            <label class="layui-form-label search-label">姓名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="name" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label search-label">商品</label>
-            <div class="layui-input-inline">
-                <input type="text" name="product" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label search-label">地址</label>
-            <div class="layui-input-inline">
-                <input type="text" name="address" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <button id="customerSearch" class="layui-btn layui-btn-primary layui-btn-radius"
-                data-type="reload">查询
-        </button>
-        <!--</div>-->
-    </div>
-    <table id="customerListTable" lay-filter="customerListTable"></table>
+    <table id="userListTable" lay-filter="userListTable"></table>
 </script>
 </body>
 </html>

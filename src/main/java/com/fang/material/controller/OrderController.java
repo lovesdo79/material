@@ -118,7 +118,6 @@ public class OrderController extends BaseController {
         }
 
         //生成订单
-//        OrdersDomain ordersDomain = new OrdersDomain();
         ordersDomain.setOrderNo(String.valueOf(idWorker.nextId()));
         resultMap = orderService.insertOrUpdate(ordersDomain);
 
@@ -162,18 +161,18 @@ public class OrderController extends BaseController {
     public Object listWechat(OrderCondition condition) {
         log.info("request param:" + JSONObject.toJSONString(condition));
 
-        ListResult<OrderVo> result = new ListResult<OrderVo>();
         filterCondition(condition);
 
-        List<OrderVo> orderVos = orderService.getListByPager(condition);
-        int total = orderService.getListCount(condition);
-        result.setRows(orderVos);
-        result.setTotal(total);
-
-
-        result.setRtnCode(Const.SUCCESS);
-        result.setRtnMsg(Const.SUCCESS_MSG);
-
+        ListResult<OrderVo> result = new ListResult<>();
+        try {
+            List<OrderVo> orderVos = orderService.getListByPager(condition);
+            int total = orderService.getListCount(condition);
+            result.setRows(orderVos);
+            result.setTotal(total);
+        } catch (Exception e) {
+            result.setRtnCode(Const.FAIL);
+            result.setRtnMsg(e.getMessage());
+        }
         log.info("rtnData:" + result);
         return result;
     }

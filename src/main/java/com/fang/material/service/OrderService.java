@@ -11,6 +11,7 @@ import com.fang.material.util.ResultMap;
 import com.fang.material.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.UUID;
 /**
  * Created by fang on 2017/4/21.
  */
+@Transactional
 @Service
 public class OrderService {
 
@@ -70,26 +72,26 @@ public class OrderService {
     }
 
     private void setDynamicFields(List<OrderVo> orderVos) {
-        for (OrderVo orderVo : orderVos) {
-            String productNames = "";
-            double totalPrice = 0;
-            List<OrderProductVo> orderProductVos = orderVo.getOrderProductVos();
-            boolean first = true;
-            for (OrderProductVo orderProductVo : orderProductVos) {
-                if (first) {
-                    first = false;
-                } else {
-                    productNames += ",";
-                }
-
-                //计算总价
-                totalPrice += orderProductVo.getProduct().getUnitPrice() * orderProductVo.getQuantity();
-                productNames += orderProductVo.getProduct().getProductName();
-            }
-
-            orderVo.setProductNames(productNames);
-            orderVo.setTotalPrice(totalPrice);
-        }
+//        for (OrderVo orderVo : orderVos) {
+//            String productNames = "";
+//            double totalPrice = 0;
+//            List<OrderProductVo> orderProductVos = orderVo.getOrderProductVos();
+//            boolean first = true;
+//            for (OrderProductVo orderProductVo : orderProductVos) {
+//                if (first) {
+//                    first = false;
+//                } else {
+//                    productNames += ",";
+//                }
+//
+//                //计算总价
+//                totalPrice += orderProductVo.getProduct().getUnitPrice() * orderProductVo.getQuantity();
+//                productNames += orderProductVo.getProduct().getProductName();
+//            }
+//
+//            orderVo.setProductNames(productNames);
+//            orderVo.setTotalPrice(totalPrice);
+//        }
     }
 
     public int updateDeleteStatus(String id, boolean isDelete) {

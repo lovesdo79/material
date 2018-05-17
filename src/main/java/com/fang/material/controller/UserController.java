@@ -3,7 +3,9 @@ package com.fang.material.controller;
 import com.fang.material.condition.UserCondition;
 import com.fang.material.entity.domain.UserDomain;
 import com.fang.material.entity.vo.EasyUI;
+import com.fang.material.entity.vo.ListResult;
 import com.fang.material.service.UserService;
+import com.fang.material.util.Const;
 import com.fang.material.util.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +49,27 @@ public class UserController extends BaseController {
 
         return easyUI;
     }
+
+    @RequestMapping("/userList")
+    @ResponseBody
+    public Object userList(UserCondition condition) {
+        filterCondition(condition);
+
+        ListResult<UserDomain> result = new ListResult<>();
+        try {
+            List<UserDomain> userDomains = userService.getListByPager(condition);
+            int total = userService.getListCount(condition);
+
+            result.setTotal(total);
+            result.setRows(userDomains);
+        } catch (Exception e) {
+            result.setRtnCode(Const.FAIL);
+            result.setRtnMsg(e.getMessage());
+        }
+
+        return result;
+    }
+
 
     @RequestMapping("/save")
     @ResponseBody

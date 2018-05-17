@@ -9,6 +9,7 @@ import com.fang.material.service.UserService;
 import com.fang.material.util.Const;
 import com.fang.material.util.JwtToken;
 import com.fang.material.util.ResultMap;
+import com.fang.material.util.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class BaseController {
     }
 
     @RequestMapping("index")
-    public String index(){
+    public String index() {
         return "index";
     }
 
@@ -49,12 +50,15 @@ public class BaseController {
 
         String sort = conditon.getSort();
 
-        sort = SortName.getValue(sort);
+        String _sort = SortName.getValue(sort);
 
-        conditon.setSort(sort);
+        if (StringUtils.isEmpty(_sort)) {
+            _sort = sort;
+        }
+
+        conditon.setSort(_sort);
 
     }
-
 
     /**
      * 获取token

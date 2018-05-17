@@ -232,8 +232,8 @@
             if (l.selectorText === ".laytable-cell-" + i.index + "-" + e) return t(l), !0
         })
     }, M.prototype.fullSize = function () {
-        var e, t = this, i = t.config, a = i.height;
-        t.fullHeightGap && (a = A.height() - t.fullHeightGap, a < 135 && (a = 135), t.elem.css("height", a)), e = parseFloat(a) - parseFloat(t.layHeader.height()) - 1, i.toolbar && (e -= t.layTool.outerHeight()), i.page && (e = e - t.layPage.outerHeight() - 1), t.layMain.css("height", e)
+        var e, t = this, i = t.config, a = i.height, b = parseFloat(t.layHeader.height());
+        t.fullHeightGap && (a = A.height() - t.fullHeightGap, a < 135 && (a = 135), t.elem.css("height", a)), e = parseFloat(a) - (b === -1 ? 38 : b) - 1, i.toolbar && (e -= t.layTool.outerHeight()), i.page && (e = e - t.layPage.outerHeight() - 1), t.layMain.css("height", e)
     }, M.prototype.getScrollWidth = function (e) {
         var t = 0;
         return e ? t = e.offsetWidth - e.clientWidth : (e = document.createElement("div"), e.style.width = "100px", e.style.height = "100px", e.style.overflowY = "scroll", document.body.appendChild(e), t = e.offsetWidth - e.clientWidth, document.body.removeChild(e)), t

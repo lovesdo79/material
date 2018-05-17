@@ -169,28 +169,45 @@
 
     <!-- 自定义方法开始 -->
     <resultMap id="VOResultMap" extends="BaseResultMap" type="com.fang.material.entity.vo.OrderVo">
-        <association property="customer" column="CUSTOMER_ID"
-                     javaType="com.fang.material.entity.domain.CustomerDomain"
-                     select="com.fang.material.entity.mapper.CustomerDomainMapper.selectByPrimaryKey"/>
-        <collection property="orderProductVos" column="ORDER_ID" ofType="com.fang.material.entity.vo.OrderProductVo"
-                    select="com.fang.material.entity.mapper.OrderProductDomainMapper.selectListByOrderId"/>
+        <!--<association property="customer" column="CUSTOMER_ID"-->
+                     <!--javaType="com.fang.material.entity.domain.CustomerDomain"-->
+                     <!--select="com.fang.material.entity.mapper.CustomerDomainMapper.selectByPrimaryKey"/>-->
+        <!--<collection property="orderProductVos" column="ORDER_ID" ofType="com.fang.material.entity.vo.OrderProductVo"-->
+                    <!--select="com.fang.material.entity.mapper.OrderProductDomainMapper.selectListByOrderId"/>-->
+        <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+        <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="INSTALLATION_DATE" jdbcType="DATE" property="installationDate" />
+        <result column="CUSTOMER_ID" jdbcType="VARCHAR" property="customerId" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <result column="TYPE" jdbcType="INTEGER" property="type" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="PROD_COUNT" jdbcType="BIGINT" property="prodCount" />
+        <result column="PROD_COUNT" jdbcType="BIGINT" property="prodCount" />
+        <result column="TOTAL_PRICE" jdbcType="DOUBLE" property="totalPrice" />
+    </resultMap>
+    <resultMap extends="VOResultMap" id="VOResultMapWithBLOBs" type="com.fang.material.entity.vo.OrderVo">
+        <result column="PROD_NAMES" jdbcType="LONGVARCHAR" property="prodNames" />
     </resultMap>
 
     <sql id="list_search">
 
     </sql>
 
-    <select id="getListByPager" resultMap="VOResultMap" parameterType="com.fang.material.condition.OrderCondition">
+    <select id="getListByPager" resultMap="VOResultMapWithBLOBs" parameterType="com.fang.material.condition.OrderCondition">
         <include refid="common.mysql_head"/>
         SELECT *
-        FROM ORDERS
+        FROM order_cust_view
         WHERE 1=1
         <include refid="list_search"/>
         <include refid="common.mysql_end"/>
     </select>
 
     <select id="getListCount" resultType="Integer" parameterType="com.fang.material.condition.OrderCondition">
-        SELECT COUNT(*) FROM ORDERS
+        SELECT COUNT(*) FROM order_cust_view
         WHERE 1=1
         <include refid="list_search"/>
     </select>

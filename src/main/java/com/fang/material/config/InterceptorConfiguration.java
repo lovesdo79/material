@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.util.ArrayList;
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class InterceptorConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -18,24 +18,26 @@ public class InterceptorConfiguration extends WebMvcConfigurerAdapter {
         InterceptorRegistration login = registry.addInterceptor(new LoginInterceptor());
         // 配置不拦截的路径
         List<String> exludePathPatrerns = new ArrayList<>();
-        exludePathPatrerns.add("/base/getToken");
-        exludePathPatrerns.add("/**/wechat");
-        exludePathPatrerns.add("/resources/**");
+//        exludePathPatrerns.add("/base/getToken");
+//        exludePathPatrerns.add("/**/wechat");
+//        exludePathPatrerns.add("/resources/**");
         exludePathPatrerns.add("/**/logout");
         exludePathPatrerns.add("/**/login");
-        exludePathPatrerns.add("/**.jsp");
+//        exludePathPatrerns.add("/**.jsp");
         exludePathPatrerns.add("/**.html");
-        exludePathPatrerns.add("/static/**");
+        exludePathPatrerns.add("/js/**");
+        exludePathPatrerns.add("/**.css");
+//        exludePathPatrerns.add("/static/**");
         exludePathPatrerns.add("/error");
-        exludePathPatrerns.add("/index");
-        exludePathPatrerns.add("/templates/**");
+//        exludePathPatrerns.add("/index");
+//        exludePathPatrerns.add("/templates/**");
         login.excludePathPatterns(exludePathPatrerns);
         login.addPathPatterns("/**");
 
 
         // 注册拦截器
-        InterceptorRegistration ir = registry.addInterceptor(new TokenInterceptor());
+//        InterceptorRegistration ir = registry.addInterceptor(new TokenInterceptor());
         // 配置拦截的路径
-        ir.addPathPatterns("/**/wechat");
+//        ir.addPathPatterns("/**/wechat");
     }
 }

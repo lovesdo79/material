@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.fang.material.condition.ProductCondition;
 import com.fang.material.entity.domain.ProductDomain;
 import com.fang.material.entity.vo.EasyUI;
+import com.fang.material.entity.vo.ListResult;
 import com.fang.material.service.OrderProductService;
 import com.fang.material.service.ProductService;
+import com.fang.material.util.Const;
 import com.fang.material.util.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +49,24 @@ public class ProductController extends BaseController {
         easyUI.setRows(productDomains);
 
         return easyUI;
+    }
+
+    @RequestMapping("/proList")
+    @ResponseBody
+    public Object proList(ProductCondition condition) {
+        filterCondition(condition);
+
+        ListResult<ProductDomain> result = new ListResult<>();
+        try {
+            List<ProductDomain> productDomains = productService.selectListByOrderId(condition.getOrderId());
+            result.setTotal(productDomains.size());
+            result.setRows(productDomains);
+        } catch (Exception e) {
+            result.setRtnCode(Const.FAIL);
+            result.setRtnMsg(e.getMessage());
+        }
+
+        return result;
     }
 
 

@@ -14,34 +14,34 @@ import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 
 public class LoginInterceptor implements HandlerInterceptor {
-//    private final Log logger = LogFactory.getLog(LoginInterceptor.class);
-    private static final Log logger = LogFactory.getLog(LoginInterceptor.class);
+    //    private final Log logger = LogFactory.getLog(LoginInterceptor.class);
+    private static final Log log = LogFactory.getLog(LoginInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURL().toString();
-
-        try {
-            //静态资源允许直接访问
-            HttpSession session = request.getSession();
-            UserDomain userDomain = (UserDomain) session.getAttribute("user");
-            if (null == userDomain) {
-                PrintWriter printWriter = response.getWriter();
-                printWriter.print("<script language>alert('请登录！…………');top.location.href='index.html'</script>");
-                response.sendRedirect(request.getContextPath() + "/index.html");
-                return false;
-            }
-        } catch (Exception e) {
-            logger.error("Login Interceptor Error!" + e);
-            JSONObject fail = new JSONObject();
-            fail.put(Const.RTN_CODE, Const.FAIL);
-            fail.put(Const.RTN_MSG, e.getMessage());
-            PrintWriter out = response.getWriter();
-            out.print(fail);
-            out.flush();
-            out.close();
-            return false;
-        }
+        log.info("Request URL:" + url);
+//        try {
+//            //静态资源允许直接访问
+//            HttpSession session = request.getSession();
+//            UserDomain userDomain = (UserDomain) session.getAttribute("user");
+//            if (null == userDomain) {
+//                PrintWriter printWriter = response.getWriter();
+//                printWriter.print("<script language>alert('请登录！…………');top.location.href='index.html'</script>");
+//                response.sendRedirect(request.getContextPath() + "/index.html");
+//                return false;
+//            }
+//        } catch (Exception e) {
+//            log.error("Login Interceptor Error!" + e);
+//            JSONObject fail = new JSONObject();
+//            fail.put(Const.RTN_CODE, Const.FAIL);
+//            fail.put(Const.RTN_MSG, e.getMessage());
+//            PrintWriter out = response.getWriter();
+//            out.print(fail);
+//            out.flush();
+//            out.close();
+//            return false;
+//        }
         return true;
     }
 

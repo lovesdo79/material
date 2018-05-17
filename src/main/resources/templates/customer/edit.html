@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>客户编辑</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <form class="layui-form" action="" style="margin: 20px 30px 20px 0">
+        <input type="text" id="customerId" name="customerId" th:attr="value=${customer?.customerId}" hidden="hidden"/>
+        <input type="text" id="islook" name="islook" th:attr="value=${islook}" hidden="hidden"/>
+        <input type="text" id="fastadd" name="fastadd" th:attr="value=${fastadd}" hidden="hidden"/>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入姓名"
+                       th:attr="value=${customer?.name}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="tel" lay-verify="required" autocomplete="off" placeholder="138XXXXXXXX"
+                       th:attr="value=${customer?.tel}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="address" lay-verify="required" autocomplete="off"
+                       th:attr="value=${customer?.address}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="remark" th:inline="text" class="layui-textarea">[[${customer?.remark}]]</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="bottom: 0">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="editBtn" th:if="${islook}">编辑</button>
+                <button class="layui-btn" id="submitBtn" lay-submit lay-filter="save">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../../js/layui/layui.js"></script>
+<script src="../../js/common.js"></script>
+<!--<script src="../../js/common.js"></script>-->
+<script src="../../js/customer/edit.js"></script>
+</body>
+</html>

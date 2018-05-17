@@ -1,3 +1,43 @@
+var $, layer;
+
+layui.config({}).use([], function () {
+    $ = layui.jquery;
+    layer = layui.layer;
+});
+
+
+function openWindow(option) {
+
+    var data = option.data;
+
+    var param = "";
+    var first = true;
+    for (var i in data) {
+        if (first) {
+            param += "?";
+        } else {
+            param += "&";
+        }
+        first = false;
+        param += i + "=" + data[i];
+    }
+
+    layer.open({
+        type: 2,//此处以iframe举例
+        title: option.title,
+        shade: 0,
+        maxmin: true,
+        area: option.area,
+        offset: option.offset,
+        content: option.url + param,
+
+        zIndex: layer.zIndex,//重点1
+        success: function (layero) {
+            layer.setTop(layero); //重点2
+        }
+    });
+}
+
 /**
  * Created by bgfang on 2017/4/15.
  */
@@ -6,79 +46,79 @@
  * 1.name均是简单的一级对象
  * 2.同名的name属性，值会被序列化为数组，例如checkbox等控件
  */
-$.fn.serializeObject = function () {
-    var json = {};
-    var arrObj = this.serializeArray();
-    $.each(arrObj, function () {
-        if (json[this.name]) {
-            if (!json[this.name].push) {
-                json[this.name] = [json[this.name]];
-            }
-            json[this.name].push(this.value || '');
-        } else {
-            json[this.name] = this.value || '';
-        }
-    });
-    return json;
-};
-
-/**
- * 功能：序列化form表单元素
- * 1.同名的name属性，值会被序列化为数组，例如checkbox等控件
- * 2.可以嵌套对象，name和value会被序列化为嵌套的json对象格式
- * 3.可以嵌套对象列表，name和value会被序列化成嵌套的json数组对象
- */
-$.fn.serializeNestedObject = function () {
-    var json = {};
-    var arrObj = this.serializeArray();
-    //alert(JSON.stringify(arrObj));
-    $.each(arrObj, function () {
-        // 对重复的name属性，会将对应的众多值存储成json数组
-        if (json[this.name]) {
-            if (!json[this.name].push) {
-                json[this.name] = [json[this.name]];
-            }
-            json[this.name].push(this.value || '');
-        } else {
-            // 有嵌套的属性，用'.'分隔的
-            if (this.name.indexOf('.') > -1) {
-                var pos = this.name.indexOf('.');
-                var key = this.name.substring(0, pos);
-                // 判断此key是否已存在json数据中，不存在则新建一个对象出来
-                if (!existKeyInJSON(key, json)) {
-                    json[key] = {};
-                }
-                var subKey = this.name.substring(pos + 1);
-                json[key][subKey] = this.value || '';
-            }
-            // 普通属性
-            else {
-                json[this.name] = this.value || '';
-            }
-
-        }
-    });
-
-    // 处理那些值应该属于数组的元素，即带'[number]'的key-value对
-    var resultJson = {};
-    for (var key in json) {
-        // 数组元素
-        if (key.indexOf('[') > -1) {
-            var pos = key.indexOf('[');
-            var realKey = key.substring(0, pos);
-            // 判断此key是否已存在json数据中，不存在则新建一个数组出来
-            if (!existKeyInJSON(realKey, resultJson)) {
-                resultJson[realKey] = [];
-            }
-            resultJson[realKey].push(json[key]);
-
-        }
-        else { // 单元素
-            resultJson[key] = json[key];
-        }
-    }
-    return resultJson;
-};
+// $.fn.serializeObject = function () {
+//     var json = {};
+//     var arrObj = this.serializeArray();
+//     $.each(arrObj, function () {
+//         if (json[this.name]) {
+//             if (!json[this.name].push) {
+//                 json[this.name] = [json[this.name]];
+//             }
+//             json[this.name].push(this.value || '');
+//         } else {
+//             json[this.name] = this.value || '';
+//         }
+//     });
+//     return json;
+// };
+//
+// /**
+//  * 功能：序列化form表单元素
+//  * 1.同名的name属性，值会被序列化为数组，例如checkbox等控件
+//  * 2.可以嵌套对象，name和value会被序列化为嵌套的json对象格式
+//  * 3.可以嵌套对象列表，name和value会被序列化成嵌套的json数组对象
+//  */
+// $.fn.serializeNestedObject = function () {
+//     var json = {};
+//     var arrObj = this.serializeArray();
+//     //alert(JSON.stringify(arrObj));
+//     $.each(arrObj, function () {
+//         // 对重复的name属性，会将对应的众多值存储成json数组
+//         if (json[this.name]) {
+//             if (!json[this.name].push) {
+//                 json[this.name] = [json[this.name]];
+//             }
+//             json[this.name].push(this.value || '');
+//         } else {
+//             // 有嵌套的属性，用'.'分隔的
+//             if (this.name.indexOf('.') > -1) {
+//                 var pos = this.name.indexOf('.');
+//                 var key = this.name.substring(0, pos);
+//                 // 判断此key是否已存在json数据中，不存在则新建一个对象出来
+//                 if (!existKeyInJSON(key, json)) {
+//                     json[key] = {};
+//                 }
+//                 var subKey = this.name.substring(pos + 1);
+//                 json[key][subKey] = this.value || '';
+//             }
+//             // 普通属性
+//             else {
+//                 json[this.name] = this.value || '';
+//             }
+//
+//         }
+//     });
+//
+//     // 处理那些值应该属于数组的元素，即带'[number]'的key-value对
+//     var resultJson = {};
+//     for (var key in json) {
+//         // 数组元素
+//         if (key.indexOf('[') > -1) {
+//             var pos = key.indexOf('[');
+//             var realKey = key.substring(0, pos);
+//             // 判断此key是否已存在json数据中，不存在则新建一个数组出来
+//             if (!existKeyInJSON(realKey, resultJson)) {
+//                 resultJson[realKey] = [];
+//             }
+//             resultJson[realKey].push(json[key]);
+//
+//         }
+//         else { // 单元素
+//             resultJson[key] = json[key];
+//         }
+//     }
+//     return resultJson;
+// };
 
 /**
  * 功能：判断key在Json结构中是否存在
@@ -102,7 +142,7 @@ if (!Object.assign) {
         enumerable: false,
         configurable: true,
         writable: true,
-        value: function(target, firstSource) {
+        value: function (target, firstSource) {
             "use strict";
             if (target === undefined || target === null)
                 throw new TypeError("Cannot convert first argument to object");
@@ -122,46 +162,6 @@ if (!Object.assign) {
     });
 }
 
-function openWindow(title, url, width, height) {
-    var content = '<iframe src="' + url + '" width="100%" height="99%" frameborder="0" scrolling="no"></iframe>';
-    // var hidden = $("#editdlg").parent().is(":hidden");
-
-
-    var boarddiv = '<div id="msgwindow" title="' + title + '"></div>'//style="overflow:hidden;"可以去掉滚动条
-    $(document.body).append(boarddiv);
-    var win = $('#msgwindow').dialog({
-        content: content,
-        width: width,
-        height: height,
-        modal: true,
-        title: title,
-        onClose: function () {
-            $(this).dialog('destroy');//后面可以关闭后的事件
-        }
-    });
-    win.dialog('open');
-    /* if (hidden) {
-     var clientHeight = document.documentElement.clientHeight;
-     var clientWidth = document.documentElement.clientWidth;
-     var divHeight = $("#editdlg").parent().height();
-     var divWidth = $("#editdlg").parent().width();
-
-     var top = (clientHeight - divHeight - 20) * 0.5;
-     var left = (clientWidth - divWidth - 50) * 0.5;
-
-
-     $('#editdlg').dialog({
-
-     });
-     $('#editdlg').dialog('open').dialog('resize', {
-     top: top,
-     left: left
-     });
-     // initColumnsDiv();
-     } else {
-     $('#editdlg').dialog('close');
-     }*/
-}
 
 /**
  * 格式化日期
@@ -170,7 +170,7 @@ function openWindow(title, url, width, height) {
  * @param row
  * @returns {String}
  */
-function formatterdate(val, row) {
+function formatterdate(val) {
     if (val != null) {
         var date = new Date(val);
         var years = date.getFullYear();
@@ -192,7 +192,7 @@ function formatterdate(val, row) {
  * @param row
  * @returns {Number}
  */
-function formatternumber(val, row) {
+function formatternumber(val) {
     if (val == null) {
         return '0.00';
     }
@@ -206,7 +206,7 @@ function formatternumber(val, row) {
  * @param rec
  * @returns {String}
  */
-function formatterTitle(val, rec) {
+function formatterTitle(val) {
     if (rec == undefined) {
         return "";
     }

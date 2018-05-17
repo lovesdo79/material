@@ -1,203 +1,151 @@
-/**
- * Created by bgfang on 2017/4/14.
- */
-var width = "600px";
-var height = "405px";
-$(function () {
-    loadGrid();
+var $, table, sortObj, whereObj;
+layui.config({
+    base: '/js/layui/lay.modules/'
+}).use(['table'], function () {
+    $ = layui.jquery;
+    table = layui.table;
 
-    $("#btnSelect").click(function () {
-        select();
+    loadList();
+
+
+    //监听查询按钮
+    $("#customerSearch").on('click', function () {
+        search();
     });
-    enterSearch();
+
+    //监听新增按钮
+    $("#customerAdd").on('click', function () {
+        var option = {
+            url: "/customer/edit/null",
+            area: ["800px", "600px"],
+            offset: ["10px", "50px"],
+            title: "新增客户",
+            data: {
+                islook: false
+            }
+        };
+        openWindow(option);
+    });
 });
 
-function loadGrid() {
-    $("#gridList").datagrid({
-        nowrap: true,
-        autoRowHeight: false,
-        striped: true,
-        url: '../customer/list',
-        sortOrder: 'desc',
-        sortName: "updateTime",
-        remoteSort: true,
-        rownumbers: true,
-        fit: true,
-        // fitColumns: true,
-        idField: 'customerId',
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 20,
-        singleSelect: true,
-        checkOnSelect: true,
-        showFooter: true,
-        pageList: [20, 25, 30, 35],
-        columns: [[
-            {
-                field: 'name',
-                title: '客户姓名',
-                width: 100,
-                halign: 'center',
-                align: 'left',
-                sortable: true,
-            }, {
-                field: 'tel',
-                title: '电话',
-                width: 150,
-                halign: 'center',
-                align: 'left',
-                sortable: true
-            }, {
-                field: 'customerType',
-                title: '类型',
-                width: 50,
-                halign: 'center',
-                align: 'left',
-                sortable: true
-            }, {
-                field: 'address',
-                title: '地址',
-                width: 200,
-                halign: 'center',
-                align: 'left',
-                sortable: true
-            }, {
-                field: 'remark',
-                title: '备注',
-                width: 250,
-                halign: 'center',
-                formatter: formatterTitle,
-                align: 'left'
-            }, {
-                field: 'updateTime',
-                title: '更新时间',
-                width: 145,
-                halign: 'center',
-                align: 'center',
-                sortable: true,
-                formatter: formatterdate
-            }, {
-                field: 'opt',
-                title: '操作',
-                width: 115,
-                halign: 'center',
-                align: 'left',
-                formatter: function (value, rec) {
-                    if (rec.customerId === undefined) {
-                        return "";
-                    }
-                    var btn = "<a class='editcls' onclick=\"edit('" + rec.customerId
-                        + "',true)\" href=\"javascript:void(0)\"> 查看</a>";
-                    btn += "<a class='editcls' onclick=\"edit('"
-                        + rec.customerId
-                        + "',false)\" href='javascript:void(0)'>编辑</a>";
-                    btn += "<a class='editcls' onclick=\"del('"
-                        + rec.customerId
-                        + "')\" href='javascript:void(0)'>删除</a>";
-                    return btn;
+/**
+ * 表单查询
+ */
+function search() {
+    whereObj.name = $("#name").val();
+    whereObj.tel = $("#tel").val();
+    whereObj.address = $("#address").val();
 
-                }
-            }
+    reloadList();
+}
+
+
+/**
+ * 列表加载
+ */
+function loadList() {
+    var tabId = "customerListTable";
+
+    sortObj = {field: "updateTime", type: "desc"};
+    whereObj = {
+        sort: sortObj.field,
+        order: sortObj.type
+    };
+    var option = {
+        elem: "#" + tabId,
+        method: "POST",
+        url: "custList",
+        height: "full-102",
+        where: whereObj,
+        request: {pageName: "page", limitName: "pageSize"},
+        response: {
+            statusName: 'rtnCode',
+            statusCode: "00",
+            countName: 'total',
+            dataName: 'rows'
+        },
+        initSort: sortObj,
+        cols: [[
+            {type: 'checkbox', fixed: 'left'},
+            {field: 'name', width: 120, title: '客户姓名', sort: true},
+            {field: 'tel', width: 150, title: '电话'},
+            {field: 'customerType', width: 80, title: '类别'},
+            {field: 'address', title: '地址', minWidth: 200},
+            {field: 'remark', width: 200, title: '备注'},
+            {
+                field: 'updateTime', width: 162, title: '更新时间', templet:
+                    function (d) {
+                        return formatterdate(d.updateTime);
+                    }, sort: true
+            },
+            {fixed: 'right', width: 178, align: 'center', toolbar: '#editBar'}
         ]],
-        toolbar: "#searchDiv",
-        onHeaderContextMenu: function (e, field) {
-            e.preventDefault();
-            if (!$('#tmenu').length) {
-                createColumnMenu();
-            }
-            $('#tmenu').menu('show', {
-                left: e.pageX,
-                top: e.pageY
+        text: {none: "暂无数据"},
+        limit: 5,
+        limits: [5, 10, 20],
+        page: true
+    };
+
+    table.render(option);
+
+    table.on('sort(' + tabId + ')', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        whereObj.sort = obj.field;
+        whereObj.order = obj.type;
+        sortObj = obj;
+
+        reloadList();
+    });
+
+    /**
+     * 右侧工具按钮检测
+     */
+    table.on("tool(" + tabId + ")", function (obj) {
+        var data = obj.data;
+        var option = {
+            url: "/customer/edit/" + data.customerId,
+            area: ["800px", "600px"],
+            offset: ["10px", "50px"]
+        };
+        if (obj.event === 'detail') {
+            option.title = "客户详情";
+            option.data = {islook: "true"};
+            openWindow(option);
+        } else if (obj.event === 'del') {
+            layer.confirm('真的删除行么', function (index) {
+                $.ajax({//异步请求返回给后台
+                    url: '/customer/del/' + data.customerId,
+                    type: 'POST',
+                    data: data.field,
+                    dataType: 'json',
+                    success: function (data) {
+                        //这里获取到数据执行显示
+                        if (data.rtnCode === "00") {
+                            reloadList();
+                        } else {
+                            layer.alert(data.rtnMsg);
+                        }
+                    }
+                });
+                // obj.del();//同步到后台
+                layer.close(index);
             });
+        } else if (obj.event === 'edit') {
+            option.title = "客户详情";
+            option.data = {islook: "false"};
+            openWindow(option);
         }
-        // ,onBeforeLoad : function(node, param) {
-        // if (page != 1) {
-        // node.page = page;
-        // }
-        // if (rows != 20) {
-        // node.rows = rows;
-        // }
-        // },
-        // onLoadSuccess: totalFun,
     });
 }
 
 /**
- * 回车键搜索
+ * 重新加载列表
  */
-function enterSearch() {
-    registerEnterSearch();
-
-    $("#name").textbox('textbox').bind(
-        'keyup',
-        function (e) {
-            $("#name").textbox('setValue',
-                $(this).val().replace(/\D^./g, ''));
-        });
-
-    $("#tel").textbox('textbox').bind(
-        'keyup',
-        function (e) {
-            $("#tel").textbox('setValue',
-                $(this).val().replace(/\D^./g, ''));
-        });
-
-    $("#address").textbox('textbox').bind(
-        'keyup',
-        function (e) {
-            $("#address").textbox('setValue',
-                $(this).val().replace(/\D^./g, ''));
-        });
-}
-
-function select() {
-    // 校验是否存在不通过的验证
-    var validate = $(".validatebox-invalid");
-    if (validate.length > 0) {
-        return false;
-    }
-
-    var param = $("#gridList").datagrid("options").queryParams;
-    param.name = $("#name").textbox('getValue');
-    param.tel = $("#tel").textbox('getValue');
-    param.address = $("#address").textbox('getValue');
-
-    $("#gridList").datagrid('options').queryParams = param;
-    $("#gridList").datagrid("reload");
-}
-
-
-function add() {
-    openWindow('新增', './show/null', width, height);
-}
-
-function edit(id, isLook) {
-    var url = "./show/" + id + "?islook=" + isLook;
-    var title = isLook ? "查看" : "编辑";
-
-    openWindow(title, url, width, height);
-}
-
-function del(id) {
-    $.messager.confirm("提示", "此操作不可逆转，您确认要删除此客户吗？", function (r) {
-        if (r) {
-            $.ajax({
-                type: "POST",
-                url: "./del/" + id,
-                dataType: "json",
-                contentType: "application/x-www-form-urlencoded",
-                success: function (data) {
-                    var code = data.rtnCode;
-                    if ("00" === code) {
-                        $.messager.alert("成功", data.rtnMsg, 'info')
-                    } else {
-                        $.messager.alert("错误", data.rtnMsg, 'error')
-                    }
-
-                    loadGrid();
-                }
-            });
-        }
+function reloadList() {
+    table.reload("customerListTable", {
+        page: {
+            curr: 1
+        },
+        initSort: sortObj,
+        where: whereObj
     });
 }
-

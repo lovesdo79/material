@@ -5,7 +5,7 @@ package com.fang.material.enums;
  */
 public enum SortName {
 
-    UPDATETIME("updateTime", "UPDATE_TIME");
+    UPDATETIME("updateTime", "UPDATE_TIME"), CREATETIME("createTime", "CREATE_TIME");
 
     private String name;
     private String value;

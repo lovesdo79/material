@@ -1,90 +1,9 @@
-.hidden_y {
-    overflow-y: hidden;
+
+
+.display {
+    display: none;
 }
 
-.editcls {
-    text-decoration: none;
-    margin: 0 5px;
+.disable-input {
+    background-color: #eee;
 }
-
-.rightAlign {
-    text-align: right;
-}
-
-.leftAlign {
-    text-align: left;
-}
-
-.centerAlign {
-    align: center;
-    text-align: center;
-}
-
-.gainsboroBack {
-    background-color: gainsboro;
-}
-
-.red {
-    color: red;
-}
-
-table {
-    background-color: transparent;
-}
-
-/*caption {*/
-/*padding-top: @table-cell-padding;*/
-/*padding-bottom: @table-cell-padding;*/
-/*color: @text-muted;*/
-/*text-align: left;*/
-/*}*/
-th {
-    text-align: left;
-}
-
-.table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 20px;
-    background-color: transparent;
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
-.table :first-child tr:first-child td {
-    border-top: 0;
-}
-
-.table tr td {
-    padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-    border-top: 1px solid #ddd;
-    text-align: center;
-}
-
-.table-bordered {
-    border: 1px solid #ddd;
-}
-
-.table-bordered tr td {
-    border: 1px solid #ddd;
-}
-
-.text-span {
-    position: relative;
-    border: 1px solid #95B8E7;
-    background-color: #fff;
-    vertical-align: middle;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    margin: 0;
-    padding: 0;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-    width: 158px;
-    height: 22px;
-}
-
