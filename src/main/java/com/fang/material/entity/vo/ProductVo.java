@@ -8,8 +8,6 @@ import com.fang.material.entity.domain.ProductDomain;
 public class ProductVo extends ProductDomain {
     private double quantity;
 
-    private int valuationMethod;
-
     private double totalPrice;
 
     private String orderProductId;
@@ -20,14 +18,6 @@ public class ProductVo extends ProductDomain {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
-    }
-
-    public int getValuationMethod() {
-        return valuationMethod;
-    }
-
-    public void setValuationMethod(int valuationMethod) {
-        this.valuationMethod = valuationMethod;
     }
 
     public double getTotalPrice() {

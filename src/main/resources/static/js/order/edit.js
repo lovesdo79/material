@@ -1,9 +1,10 @@
 var $, form;
 layui.config({
     base: '/js/layui/lay.modules/'
-}).use(['table', 'form'], function () {
+}).use(['table', 'form', 'table'], function () {
     $ = layui.jquery;
     form = layui.form;
+    table = layui.table;
 
 
     initNameSelect();
@@ -33,6 +34,10 @@ layui.config({
                 return;
             }
         }
+    });
+
+    table.init('productList', {
+        height: "full-350"
     });
 });
 

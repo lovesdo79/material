@@ -30,8 +30,9 @@ function openWindow(option) {
         area: option.area,
         offset: option.offset,
         content: option.url + param,
-
+        shade: [0.8, '#393D49'],
         zIndex: layer.zIndex,//重点1
+        moveOut: true,
         success: function (layero) {
             layer.setTop(layero); //重点2
         }

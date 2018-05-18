@@ -9,6 +9,8 @@ layui.config({
     var islook = $('#islook').val().toLowerCase() === "true";
     var fastadd = $('#fastadd').val().toLowerCase() === "true";
 
+    $("#customerType").val($("#custType").val());
+
     lookView(islook);
 
     $("#editBtn").click(function () {
@@ -52,6 +54,7 @@ function lookView(islook) {
         $('.layui-input').addClass("disable-input");
         $('.layui-textarea').attr("disabled", "disabled");
         $('.layui-textarea').addClass("disable-input");
+        $('#customerType').attr("disabled", "disabled");
         $('#submitBtn').attr("disabled", "disabled");
         $('#submitBtn').addClass("display layui-btn-disabled");
         $('#editBtn').removeAttr('disabled');
@@ -61,9 +64,12 @@ function lookView(islook) {
         $('.layui-input').removeClass("disable-input");
         $('.layui-textarea').removeAttr("disabled");
         $('.layui-textarea').removeClass("disable-input");
+        $('#customerType').removeAttr("disabled");
         $('#submitBtn').removeAttr('disabled');
         $('#submitBtn').removeClass("display layui-btn-disabled");
         $('#editBtn').attr('disabled', 'disabled');
         $('#editBtn').addClass("layui-btn-disabled");
     }
+
+    form.render('select');
 }

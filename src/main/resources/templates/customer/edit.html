@@ -33,6 +33,23 @@
                        th:attr="value=${customer?.tel}" class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类别</label>
+            <div class="layui-input-inline">
+                <input type="hidden" id="custType" th:attr="value=${customer?.type}"/>
+                <select name="type" id="customerType" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="1">散&nbsp;&nbsp;&nbsp;&nbsp;客
+                    </option>
+                    <option value="2">批发商</option>
+                    <option value="3">供应商</option>
+                    <!--<option value="1" th:attr="${customer?.type==1}?selected=|''|:|''|">散&nbsp;&nbsp;&nbsp;&nbsp;客-->
+                    <!--</option>-->
+                    <!--<option value="2" th:attr="${customer?.type==2}?selected=|''|:|''|">批发商</option>-->
+                    <!--<option value="3" th:attr="${customer?.type==3}?selected=|''|:|''|">供应商</option>-->
+                </select>
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">地址</label>
