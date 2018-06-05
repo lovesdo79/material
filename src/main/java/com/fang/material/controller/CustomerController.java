@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -55,7 +56,8 @@ public class CustomerController extends BaseController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public Object list(CustomerCondition condition) {
+    public Object list(@RequestBody CustomerCondition condition) {
+        log.info("Receive request for[customer/list] with param:" + JSONObject.toJSONString(condition));
         filterCondition(condition);
 
         EasyUI<CustomerVo> easyUI = new EasyUI<>();
