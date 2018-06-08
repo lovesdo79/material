@@ -176,9 +176,10 @@
         </if>
     </sql>
 
-    <select id="getList" resultMap="BaseResultMap" parameterType="com.fang.material.condition.CustomerCondition">
+    <select id="getListByPager" resultMap="BaseResultMap" parameterType="com.fang.material.condition.CustomerCondition">
         <include refid="common.mysql_head"/>
-        SELECT *
+        SELECT
+        USER_ID, USER_NAME, USER_FULL_NAME, IS_DELETE, CREATE_TIME, UPDATE_TIME
         FROM USER
         WHERE 1=1
         <include refid="list_search"/>

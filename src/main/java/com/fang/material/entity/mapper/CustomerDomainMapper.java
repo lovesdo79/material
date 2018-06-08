@@ -20,4 +20,5 @@ public interface CustomerDomainMapper extends BaseMapper<CustomerDomain> {
     CustomerDomain getCustomerByOrderId(String orderId);
 
     List<CustomerDomain> getAllList();
+
 }

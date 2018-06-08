@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -84,7 +85,7 @@ public class OrderController extends BaseController {
         return "order/edit";
     }
 
-    @RequestMapping("/list")
+//    @RequestMapping("/list")
     @ResponseBody
     public Object list(OrderCondition condition) {
         EasyUI<OrderVo> easyUI = new EasyUI<OrderVo>();
@@ -156,9 +157,9 @@ public class OrderController extends BaseController {
     }
 
 
-    @RequestMapping("/orderList")
+    @RequestMapping("/list")
     @ResponseBody
-    public Object listWechat(OrderCondition condition) {
+    public Object listWechat(@RequestBody OrderCondition condition) {
         log.info("request param:" + JSONObject.toJSONString(condition));
 
         filterCondition(condition);

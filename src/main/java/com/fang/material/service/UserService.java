@@ -39,8 +39,17 @@ public class UserService {
         UserDomain user = this.selectByUserName(userDomain.getUserName());
         if (null != user) {
             resultMap.setRtnCode(Const.FAIL);
-            resultMap.setRtnMsg("用户名已存在！");
+            resultMap.setRtnMsg("登录名已存在！");
             return resultMap;
+        }
+
+        if(StringUtils.isEmpty(userDomain.getUserName())){
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("登录名不能为空！");
+        }
+        if(StringUtils.isEmpty(userDomain.getUserFullName())){
+            resultMap.setRtnCode(Const.FAIL);
+            resultMap.setRtnMsg("姓名不能为空！");
         }
 
         String id = UUID.randomUUID().toString();
@@ -93,6 +102,11 @@ public class UserService {
         return userDomainMapper.selectByUserName(userName);
     }
 
+    /**
+     * 重置密码
+     * @param userId 用户ID
+     * @return ResultMap
+     */
     public ResultMap resetPassword(String userId) {
         ResultMap resultMap = new ResultMap();
 
@@ -126,7 +140,7 @@ public class UserService {
     }
 
     public List<UserDomain> getListByPager(UserCondition condition) {
-        List<UserDomain> userDomains = userDomainMapper.getList(condition);
+        List<UserDomain> userDomains = userDomainMapper.getListByPager(condition);
 
         setDynamicFields(userDomains);
 

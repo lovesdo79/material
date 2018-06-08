@@ -6,6 +6,7 @@ import com.fang.material.condition.ProductCondition;
 import com.fang.material.entity.domain.ProductDomain;
 import com.fang.material.entity.vo.EasyUI;
 import com.fang.material.entity.vo.ListResult;
+import com.fang.material.entity.vo.ProductVo;
 import com.fang.material.service.OrderProductService;
 import com.fang.material.service.ProductService;
 import com.fang.material.util.Const;
@@ -40,26 +41,14 @@ public class ProductController extends BaseController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public Object list(ProductCondition condition) {
+    public Object list(@RequestBody ProductCondition condition) {
         filterCondition(condition);
 
-        EasyUI<ProductDomain> easyUI = new EasyUI<ProductDomain>();
-        List<ProductDomain> productDomains = productService.selectListByOrderId(condition.getOrderId());
-        easyUI.setTotal(productDomains.size());
-        easyUI.setRows(productDomains);
-
-        return easyUI;
-    }
-
-    @RequestMapping("/proList")
-    @ResponseBody
-    public Object proList(ProductCondition condition) {
-        filterCondition(condition);
-
-        ListResult<ProductDomain> result = new ListResult<>();
+        ListResult<ProductVo> result = new ListResult<>();
         try {
-            List<ProductDomain> productDomains = productService.selectListByOrderId(condition.getOrderId());
-            result.setTotal(productDomains.size());
+            List<ProductVo> productDomains = productService.getListByPager(condition);
+            int total = productService.getListCount(condition);
+            result.setTotal(total);
             result.setRows(productDomains);
         } catch (Exception e) {
             result.setRtnCode(Const.FAIL);
@@ -68,22 +57,5 @@ public class ProductController extends BaseController {
 
         return result;
     }
-
-
-    @RequestMapping("/list/wechat")
-    @ResponseBody
-    public Object listWechat(ProductCondition condition) {
-        Object result = this.list(condition);
-
-        String token = condition.getToken();
-
-        JSONObject data = getResultData(token);
-        data.putAll(JSONObject.parseObject(JSONObject.toJSONString(result)));
-
-        ResultMap resultMap = new ResultMap(data);
-
-        return resultMap;
-    }
-
 
 }

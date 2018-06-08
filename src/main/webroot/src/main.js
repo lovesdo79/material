@@ -18,12 +18,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from './api/axios.config.js'
-import {dateFormat} from './common/util.js'
+import utils from './common/util.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 Vue.prototype.$http = axios
-Vue.prototype.$dateFormat = dateFormat
+Vue.prototype.$Utils = utils
 
 Vue.use(ElementUI)
 

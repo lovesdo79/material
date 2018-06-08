@@ -5,7 +5,7 @@ package com.fang.material.enums;
  */
 public enum CustomerType {
 
-    CUSTOMER(1, "客户"),
+    CUSTOMER(1, "散客"),
     WHOLESALER(2, "批发商"),
     SUPPLIER(3, "供应商");
 

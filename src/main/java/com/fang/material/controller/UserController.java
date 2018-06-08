@@ -10,6 +10,7 @@ import com.fang.material.util.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,7 +36,7 @@ public class UserController extends BaseController {
         return "user/add";
     }
 
-    @RequestMapping("/list")
+//    @RequestMapping("/list")
     @ResponseBody
     public Object list(UserCondition condition) {
         filterCondition(condition);
@@ -50,9 +51,9 @@ public class UserController extends BaseController {
         return easyUI;
     }
 
-    @RequestMapping("/userList")
+    @RequestMapping("/list")
     @ResponseBody
-    public Object userList(UserCondition condition) {
+    public Object userList(@RequestBody UserCondition condition) {
         filterCondition(condition);
 
         ListResult<UserDomain> result = new ListResult<>();
@@ -73,7 +74,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Object save(UserDomain userDomain) {
+    public Object save(@RequestBody UserDomain userDomain) {
         ResultMap resultMap = userService.insert(userDomain);
 
         return resultMap;

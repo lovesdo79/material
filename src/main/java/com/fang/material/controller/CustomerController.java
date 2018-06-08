@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.fang.material.condition.CustomerCondition;
 import com.fang.material.entity.domain.CustomerDomain;
 import com.fang.material.entity.vo.CustomerVo;
-import com.fang.material.entity.vo.EasyUI;
 import com.fang.material.entity.vo.ListResult;
 import com.fang.material.service.CustomerService;
 import com.fang.material.util.Const;
@@ -53,26 +52,9 @@ public class CustomerController extends BaseController {
         return "customer/edit";
     }
 
-
     @RequestMapping("/list")
     @ResponseBody
     public Object list(@RequestBody CustomerCondition condition) {
-        log.info("Receive request for[customer/list] with param:" + JSONObject.toJSONString(condition));
-        filterCondition(condition);
-
-        EasyUI<CustomerVo> easyUI = new EasyUI<>();
-
-        List<CustomerVo> customers = customerService.getListByPager(condition);
-        int total = customerService.getListCount(condition);
-        easyUI.setRows(customers);
-        easyUI.setTotal(total);
-
-        return easyUI;
-    }
-
-    @RequestMapping("/custList")
-    @ResponseBody
-    public Object custList(CustomerCondition condition) {
         log.info(JSONObject.toJSONString(condition));
 
         filterCondition(condition);
@@ -93,7 +75,8 @@ public class CustomerController extends BaseController {
 
     @RequestMapping(value = {"/save"})
     @ResponseBody
-    public Object save(CustomerDomain customerDomain) {
+    public Object save(@RequestBody CustomerDomain customerDomain) {
+        log.info("receive a save request:" + JSONObject.toJSONString(customerDomain));
         ResultMap resultMap = customerService.insertOrUpdate(customerDomain);
         return resultMap;
     }

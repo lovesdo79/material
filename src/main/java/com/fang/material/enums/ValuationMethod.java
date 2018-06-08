@@ -5,6 +5,7 @@ package com.fang.material.enums;
  */
 public enum ValuationMethod {
 
+    PRICE(0, "一口价"),
     AMOUNT(1, "数量"),
     AREA(2, "面积"),
     LENGTH(3, "长度");

@@ -9,6 +9,10 @@ public class ProductCondition extends BaseCondition {
 
     private String customerId;
 
+    private String productName;
+
+    private Integer productType;
+
     public String getOrderId() {
         return orderId;
     }
@@ -23,5 +27,21 @@ public class ProductCondition extends BaseCondition {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Integer getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Integer productType) {
+        this.productType = productType;
     }
 }

@@ -9,7 +9,7 @@ import java.util.EnumSet;
  * Created by bgfang on 2017/4/20.
  */
 public enum ProductType {
-
+    PACKAGE(0, "套餐"),
     CURTAIN(1, "窗帘"),
     CABINET(2, "橱柜"),
     FITTINGS(3, "配件");

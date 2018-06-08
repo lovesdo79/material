@@ -12,6 +12,8 @@ public class ProductVo extends ProductDomain {
 
     private String orderProductId;
 
+    private String type;
+
     public double getQuantity() {
         return quantity;
     }
@@ -34,5 +36,13 @@ public class ProductVo extends ProductDomain {
 
     public void setOrderProductId(String orderProductId) {
         this.orderProductId = orderProductId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

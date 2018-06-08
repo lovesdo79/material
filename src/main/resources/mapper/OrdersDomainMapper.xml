@@ -194,7 +194,18 @@
     </resultMap>
 
     <sql id="list_search">
-
+        <if test="name != null and name != ''">
+            and NAME LIKE '%${name}%'
+        </if>
+        <if test="tel != null and tel != ''">
+            and TEL LIKE '%${tel}%'
+        </if>
+        <if test="address != null and address != ''">
+            and ADDRESS LIKE '%${address}%'
+        </if>
+        <if test="product != null and product != ''">
+            and PROD_NAMES LIKE '%${product}%'
+        </if>
     </sql>
 
     <select id="getListByPager" resultMap="VOResultMapWithBLOBs" parameterType="com.fang.material.condition.OrderCondition">
