@@ -20,7 +20,7 @@
                 </el-form>
 
                 <!--表格-->
-                <el-table :data="tableData" border :default-sort="{'prop':'updateTime','order':'descending'}" @sort-change="sortChange" style="width: 100%">
+                <el-table :data="tableData" border :default-sort="{prop:'updateTime',order:'descending'}" @sort-change="sortChange" style="width: 100%">
                     <el-table-column header-align="center" align="center" type="selection">
                     </el-table-column>
                     <el-table-column prop="name" label="客户姓名" header-align="center" align="left" sortable="custom" min-width="120">
@@ -44,7 +44,7 @@
                     <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center" sortable="custom" :formatter="dateFormat"
                         width="170">
                     </el-table-column>
-                    <el-table-column label="操作" width="150" header-align="center" align="center" fixed="right">
+                    <el-table-column label="操作" width="150" fixed="right">
                         <template slot-scope="scope">
                             <el-button type="primary" size="small" @click="userDetail(scope.$index, scope.row)">查看</el-button>
                             <el-button type="danger" size="small" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
@@ -70,11 +70,6 @@
                 <el-form-item label="地址" prop="address">
                     <el-input :disabled="!formEditable" v-model="form.address"></el-input>
                 </el-form-item>
-                <el-form-item label="客户类型" prop="type">
-                    <el-select :disabled="!formEditable" v-model="form.type" placeholder="请选择客户类型">
-                        <el-option v-for="item in customerTypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                    </el-select>
-                </el-form-item>
                 <el-form-item label="备注">
                     <el-input type="textarea" :disabled="!formEditable" v-model="form.remark"></el-input>
                 </el-form-item>
@@ -99,7 +94,7 @@
                     name: '',
                     tel: '',
                     address: '',
-                    types: "1,2",
+                    types: "3",
                     page: 1,
                     pageSize: 5,
                     sort: "updateTime",
@@ -112,13 +107,6 @@
                 formEditable: false,
                 total: 0,
                 table_index: 999,
-                customerTypeOptions: [{
-                    value: 1,
-                    label: '散客'
-                }, {
-                    value: 2,
-                    label: '批发商'
-                }],
                 title: '新增客户',
                 rules: {
                     name: [{
@@ -233,7 +221,7 @@
                 this.$message.error('还没做呢!')
             },
             deleteUser(index, row) {
-                this.$confirm("您将删除客户[" + row.name + "],此操作不可恢复,请确认", '提示', {
+                this.$confirm("您将删除供应商[" + row.name + "],此操作不可恢复,请确认", '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -267,7 +255,7 @@
                     name: '',
                     tel: '',
                     address: '',
-                    type: '',
+                    type: '3',
                     remark: ''
                 }
             },

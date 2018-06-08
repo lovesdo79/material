@@ -4,14 +4,16 @@
             <el-col :span="24">
                 <!--表单-->
                 <el-form :inline="true" :model="params" class="demo-form-inline">
-                    <el-form-item label="姓名">
-                        <el-input v-model="params.name" placeholder="姓名"></el-input>
+                    <el-form-item label="名称">
+                        <el-input v-model="params.productName" placeholder="名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="电话">
-                        <el-input v-model="params.tel" placeholder="电话"></el-input>
-                    </el-form-item>
-                    <el-form-item label="地址">
-                        <el-input v-model="params.address" placeholder="地址"></el-input>
+                    <el-form-item label="类型">
+                        <el-select v-model="params.productType" placeholder="请选择">
+                            <el-option value="" label="请选择"></el-option>
+                            <el-option value="1" label="窗帘"></el-option>
+                            <el-option value="2" label="橱柜"></el-option>
+                            <el-option value="3" label="配件"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-button type="primary" icon="search" @click="searchUser">查询</el-button>
                     <el-button type="primary" @click="reset">重置</el-button>
@@ -20,16 +22,22 @@
                 </el-form>
 
                 <!--表格-->
-                <el-table :data="tableData" border :default-sort="{'prop':'updateTime','order':'descending'}" @sort-change="sortChange" style="width: 100%">
+                <el-table :data="tableData" border :default-sort="{prop:'updateTime',order:'descending'}" @sort-change="sortChange" style="width: 100%">
                     <el-table-column header-align="center" align="center" type="selection">
                     </el-table-column>
-                    <el-table-column prop="name" label="客户姓名" header-align="center" align="left" sortable="custom" min-width="120">
+                    <el-table-column prop="productName" label="名称" header-align="center" align="left" sortable="custom" min-width="120">
                     </el-table-column>
-                    <el-table-column prop="tel" label="电话" header-align="center" align="left" min-width="120">
+                    <el-table-column prop="type" label="类型" header-align="center" align="center" min-width="120">
                     </el-table-column>
-                    <el-table-column prop="customerType" label="类别" header-align="center" align="center" min-width="150">
+                    <el-table-column prop="length" label="长度" header-align="center" align="center" min-width="150">
                     </el-table-column>
-                    <el-table-column prop="address" label="地址" header-align="center" align="left" min-width="250">
+                    <el-table-column prop="width" label="宽度" header-align="center" align="center" min-width="150">
+                    </el-table-column>
+                    <el-table-column prop="property" label="属性" header-align="center" align="left" min-width="150">
+                    </el-table-column>
+                    <el-table-column prop="unitPrice" label="单价" header-align="center" align="right" :formatter="priceFormat" min-width="150">
+                    </el-table-column>
+                    <el-table-column prop="imgUrl" label="预览图" header-align="center" align="left" min-width="250">
                     </el-table-column>
                     <el-table-column label="备注" header-align="center" align="left" min-width="250">
                         <template slot-scope="scope">
@@ -44,10 +52,13 @@
                     <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center" sortable="custom" :formatter="dateFormat"
                         width="170">
                     </el-table-column>
-                    <el-table-column label="操作" width="150" header-align="center" align="center" fixed="right">
+                    <el-table-column prop="createTime" label="创建" header-align="center" align="center" sortable="custom" :formatter="dateFormat"
+                        width="170">
+                    </el-table-column>
+                    <el-table-column label="操作" width="150" fixed="right">
                         <template slot-scope="scope">
-                            <el-button type="primary" size="small" @click="userDetail(scope.$index, scope.row)">查看</el-button>
-                            <el-button type="danger" size="small" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
+                            <el-button type="primary" size="small" @click="detail(scope.$index, scope.row)">查看</el-button>
+                            <el-button type="danger" size="small" @click="delete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -60,32 +71,41 @@
         </el-row>
 
         <el-dialog :title="title" :visible.sync="dialogFormVisible" size="tiny">
-            <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-                <el-form-item label="姓名" prop="name">
-                    <el-input :disabled="!formEditable" v-model="form.name"></el-input>
+            <el-form ref="form" :rules="rules" :model="form.model" label-width="80px">
+                <el-form-item label="名称" prop="productName">
+                    <el-input :disabled="!form.editable" v-model="form.model.productName"></el-input>
                 </el-form-item>
-                <el-form-item label="电话" prop="tel">
-                    <el-input :disabled="!formEditable" v-model="form.tel"></el-input>
-                </el-form-item>
-                <el-form-item label="地址" prop="address">
-                    <el-input :disabled="!formEditable" v-model="form.address"></el-input>
-                </el-form-item>
-                <el-form-item label="客户类型" prop="type">
-                    <el-select :disabled="!formEditable" v-model="form.type" placeholder="请选择客户类型">
-                        <el-option v-for="item in customerTypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                <el-form-item label="类型" prop="productType">
+                    <el-select :disabled="!form.editable" v-model="form.model.productType" placeholder="请选择类型">
+                        <el-option v-for="item in typeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="长度" prop="length">
+                    <el-input :disabled="!form.editable" v-model="form.model.length"></el-input>
+                </el-form-item>
+                <el-form-item label="宽度" prop="width">
+                    <el-input :disabled="!form.editable" v-model="form.model.width"></el-input>
+                </el-form-item>
+                <el-form-item label="其他属性" prop="property">
+                    <el-input :disabled="!form.editable" v-model="form.model.property"></el-input>
+                </el-form-item>
+                <el-form-item label="单价" prop="unitPrice">
+                    <el-input :disabled="!form.editable" v-model="form.model.unitPrice"></el-input>
+                </el-form-item>
+                <el-form-item label="预览图" prop="imgUrl">
+                    <el-input :disabled="!form.editable" v-model="form.model.imgUrl"></el-input>
+                </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" :disabled="!formEditable" v-model="form.remark"></el-input>
+                    <el-input type="textarea" :disabled="!form.editable" v-model="form.model.remark"></el-input>
                 </el-form-item>
 
             </el-form>
 
             <div slot="footer" class="dialog-footer">
-                <el-button v-show="!formEditable" @click="formEditable = true">编辑</el-button>
-                <el-button v-show="formEditable" @click="dialogFormVisible = false">取消</el-button>
-                <el-button v-show="formEditable" @click="resetForm">重置</el-button>
-                <el-button v-show="formEditable" type="primary" @click="save">保存</el-button>
+                <el-button @click="edit" v-show="!form.editable">编辑</el-button>
+                <el-button v-show="form.editable" :disabled="!form.editable" @click="dialogFormVisible = false">取消</el-button>
+                <el-button v-show="form.editable" :disabled="!form.editable" @click="resetForm">重置</el-button>
+                <el-button v-show="form.editable" :disabled="!form.editable" type="primary" @click="save">保存</el-button>
             </div>
         </el-dialog>
     </section>
@@ -96,10 +116,8 @@
         data() {
             return {
                 params: {
-                    name: '',
-                    tel: '',
-                    address: '',
-                    types: "1,2",
+                    productName: '',
+                    productType: '',
                     page: 1,
                     pageSize: 5,
                     sort: "updateTime",
@@ -108,16 +126,21 @@
                 tableData: [],
                 dialogFormVisible: false,
                 editLoading: false,
-                form: {},
-                formEditable: false,
+                form: {
+                    model: {},
+                    editable: false
+                },
                 total: 0,
                 table_index: 999,
-                customerTypeOptions: [{
+                typeOptions: [{
                     value: 1,
-                    label: '散客'
+                    label: '窗帘'
                 }, {
                     value: 2,
-                    label: '批发商'
+                    label: '橱柜'
+                }, {
+                    value: 3,
+                    label: '配件'
                 }],
                 title: '新增客户',
                 rules: {
@@ -175,8 +198,14 @@
                 }
                 return this.$Utils.timeFormat(cellValue)
             },
+            priceFormat(row, column, cellValue, index) {
+                if (cellValue === undefined) {
+                    return '0.00'
+                }
+                return this.$Utils.priceFormat(cellValue)
+            },
             getList(params) {
-                this.$http.post('/customer/list', params).then((response) => {
+                this.$http.post('/product/list', params).then((response) => {
                     var pageUser = response.data
                     this.total = pageUser.total
                     // this.params.page = pageUser.total / this.params.pageSize
@@ -195,13 +224,14 @@
             },
             reset() {
                 this.params = {
-                    name: '',
-                    tel: '',
-                    address: '',
-                    page: 1,
-                    pageSize: 5,
-                    sort: "updateTime",
-                    order: "desc"
+                    productName: '',
+                    productType: '',
+                    length: '',
+                    width: '',
+                    property: '',
+                    unitPrice: '',
+                    imgUrl: '',
+                    remark: ''
                 }
                 this.searchUser()
             },
@@ -210,7 +240,7 @@
                 this.$refs["form"].validate(function (valid) {
                     if (valid) {
                         var form = JSON.parse(JSON.stringify(self.form));
-                        self.$http.post("/customer/save", form).then((response) => {
+                        self.$http.post("/user/save", form).then((response) => {
                             if (response.data.rtnCode === '00') {
                                 self.$message({
                                     message: "操作成功！",
@@ -229,52 +259,38 @@
                     }
                 });
             },
+            edit() {
+                this.form.editable = true
+            },
             deleteAll() {
                 this.$message.error('还没做呢!')
             },
-            deleteUser(index, row) {
-                this.$confirm("您将删除客户[" + row.name + "],此操作不可恢复,请确认", '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$http.post("/customer/del/" + row.customerId, null).then((response) => {
-                        if (response.data.rtnCode === '00') {
-                            this.$message({
-                                message: "操作成功！",
-                                type: 'success'
-                            });
-                            this.searchUser();
-                        } else {
-                            this.$message({
-                                message: response.data.rtnMsg,
-                                type: 'error'
-                            });
-                        }
-                    });
-
-                });
+            delete(index, row) {
+                this.tableData.splice(index, 1)
+                this.$message({
+                    message: '操作成功！',
+                    type: 'success'
+                })
             },
-            userDetail(index, row) {
+            detail(index, row) {
                 this.dialogFormVisible = true
-                this.form = Object.assign({}, row)
-                this.formEditable = false
+                this.form = {
+                    model: Object.assign({}, row),
+                    editable: false
+                }
                 this.table_index = index
-                this.title = '客户信息'
+                this.title = '编辑商品信息'
             },
             resetForm() {
                 this.form = {
-                    name: '',
-                    tel: '',
-                    address: '',
-                    type: '',
-                    remark: ''
+                    model: {},
+                    editable: false
                 }
             },
             add() {
                 this.dialogFormVisible = true
-                this.title = '新增客户'
-                this.formEditable = true
+                this.title = '新增产品'
+				this.form.editable = true
                 this.$refs['form'].resetFields()
                 this.resetForm();
             },
